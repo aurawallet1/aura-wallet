@@ -275,6 +275,20 @@ function check(name, got, want) {
     '0001',
   );
 
+  // Taproot: the signer must accept a P2TR (witness v1, bech32m) destination and
+  // build 5120<32-byte program>. BIP86 worked-example address.
+  const { bech32m } = await import('@scure/base');
+  const taprootAddr = 'bc1p5cyxnuxmeuwuvkwfem96lqzszd02n6xdcjrs20cac6yqjjwudpxqkedrcr';
+  const trWords = bech32m.decode(taprootAddr, 90).words;
+  const trProgram = Uint8Array.from(bech32m.fromWords(trWords.slice(1)));
+  check(
+    'Taproot (P2TR) output script is 5120<program>',
+    bytesToHex(sign.scriptPubKeyForAddress(taprootAddr)),
+    '5120' + bytesToHex(trProgram),
+  );
+  const trBuilt = sign.buildSignedTransaction([inputs[1]], [{ address: taprootAddr, value: 590000000 }], 0);
+  check('buildSignedTransaction accepts a Taproot recipient', trBuilt.hex.includes('5120' + bytesToHex(trProgram)), true);
+
   console.log(`\n${pass} passed, ${fail} failed (of ${pass + fail}).`);
   fs.rmSync(outDir, { recursive: true, force: true });
   process.exit(fail ? 1 : 0);

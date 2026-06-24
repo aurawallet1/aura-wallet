@@ -1,7 +1,7 @@
 import { secp256k1 } from '@noble/curves/secp256k1.js';
 import { sha256 } from '@noble/hashes/sha2.js';
 import { hexToBytes, bytesToHex, concatBytes } from '@noble/hashes/utils.js';
-import { bech32, base58check } from '@scure/base';
+import { bech32, bech32m, base58check } from '@scure/base';
 import { compressedPublicKey, hash160, fromWIF } from './derivation';
 import loc from '../i18n';
 
@@ -120,32 +120,52 @@ const p2shScript = (scriptHash: Uint8Array): Uint8Array =>
 
 const witnessProgramScriptCode = (publicKeyHash: Uint8Array): Uint8Array => p2pkhScript(publicKeyHash);
 
+const decodeWitnessProgram = (
+  address: string,
+): { version: number; program: Uint8Array } | null => {
+  for (const [codec, modern] of [[bech32, false], [bech32m, true]] as const) {
+    try {
+      const decoded = codec.decode(address as `${string}1${string}`, 90);
+      if (decoded.prefix !== MAINNET_HRP) continue;
+      const version = decoded.words[0];
+      const program = Uint8Array.from(bech32.fromWords(decoded.words.slice(1)));
+      if (version === 0 && modern) continue;
+      if (version >= 1 && !modern) continue;
+      return { version, program };
+    } catch {
+      continue;
+    }
+  }
+  return null;
+};
+
+// Output scripts for any destination, including Taproot (witness v1, bech32m).
+// Must stay consistent with the same function in ./transaction.
 export const scriptPubKeyForAddress = (address: string): Uint8Array => {
   const trimmed = (address ?? '').trim();
   if (!trimmed) throw new Error(loc.outflow.payeeDestinationMissing);
 
   if (trimmed.toLowerCase().startsWith(`${MAINNET_HRP}1`)) {
-    const decoded = bech32.decode(trimmed as `${string}1${string}`, 90);
-    if (decoded.prefix !== MAINNET_HRP) {
+    const witness = decodeWitnessProgram(trimmed);
+    if (!witness) throw new Error(loc.outflow.destinationFieldMalformed);
+    const { version, program } = witness;
+    if (version === 0) {
+      if (program.length !== 20 && program.length !== 32) {
+        throw new Error(loc.outflow.destinationFieldMalformed);
+      }
+    } else if (version === 1) {
+      if (program.length !== 32) throw new Error(loc.outflow.destinationFieldMalformed);
+    } else {
       throw new Error(loc.outflow.destinationFieldMalformed);
     }
-    const version = decoded.words[0];
-    const program = Uint8Array.from(bech32.fromWords(decoded.words.slice(1)));
-    if (version !== WITNESS_V0) {
-      throw new Error(loc.outflow.destinationFieldMalformed);
-    }
-    if (program.length !== 20 && program.length !== 32) {
-      throw new Error(loc.outflow.destinationFieldMalformed);
-    }
-    return concatBytes(Uint8Array.of(WITNESS_V0, program.length), program);
+    const opcode = version === 0 ? 0x00 : 0x50 + version;
+    return concatBytes(Uint8Array.of(opcode, program.length), program);
   }
 
   const decoded = base58Check.decode(trimmed);
   const version = decoded[0];
   const payload = decoded.slice(1);
-  if (payload.length !== 20) {
-    throw new Error(loc.outflow.destinationFieldMalformed);
-  }
+  if (payload.length !== 20) throw new Error(loc.outflow.destinationFieldMalformed);
   if (version === P2PKH_VERSION) return p2pkhScript(payload);
   if (version === P2SH_VERSION) return p2shScript(payload);
   throw new Error(loc.outflow.destinationFieldMalformed);
