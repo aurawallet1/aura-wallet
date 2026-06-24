@@ -1,0 +1,52 @@
+export type LanguageDescriptor = {
+  label: string;
+  value: string;
+  isRTL?: boolean;
+};
+
+const catalog = Object.freeze([
+  { label: 'English', value: 'en' },
+  { label: 'العربية (AR)', value: 'ar', isRTL: true },
+  { label: 'Български (BG)', value: 'bg_bg' },
+  { label: 'Català (CA)', value: 'ca' },
+  { label: 'Chinese (TW)', value: 'zh_tw' },
+  { label: 'Chinese (ZH)', value: 'zh_cn' },
+  { label: 'Croatian (HR)', value: 'hr_hr' },
+  { label: 'Česky (CZ)', value: 'cs_cz' },
+  { label: 'Danish (DK)', value: 'da_dk' },
+  { label: 'Deutsch (DE)', value: 'de_de' },
+  { label: 'Español (Spain) (es_ES)', value: 'es' },
+  { label: 'Español (Latin America) (es_419)', value: 'es_419' },
+  { label: 'Eesti (ET)', value: 'et' },
+  { label: 'Ελληνικά (EL)', value: 'el' },
+  { label: 'فارسی (FA)', value: 'fa', isRTL: true },
+  { label: 'Français (FR)', value: 'fr_fr' },
+  { label: 'עִברִית (HE)', value: 'he', isRTL: true },
+  { label: 'Italiano (IT)', value: 'it' },
+  { label: 'Indonesia (ID)', value: 'id_id' },
+  { label: 'Magyar (HU)', value: 'hu_hu' },
+  { label: '日本語 (JP)', value: 'jp_jp' },
+  { label: '한국어 (KO)', value: 'ko_kr' },
+  { label: 'Bahasa Melayu (MS)', value: 'ms' },
+  { label: 'Nederlands (NL)', value: 'nl_nl' },
+  { label: 'Norsk (NB)', value: 'nb_no' },
+  { label: 'Polski (PL)', value: 'pl' },
+  { label: 'Português (BR)', value: 'pt_br' },
+  { label: 'Português (PT)', value: 'pt_pt' },
+  { label: 'Română (RO)', value: 'ro' },
+  { label: 'Русский (RU)', value: 'ru' },
+  { label: 'Српски (SR)', value: 'sr_rs' },
+  { label: 'Slovenský (SK)', value: 'sk_sk' },
+  { label: 'Slovenščina (SL)', value: 'sl_si' },
+  { label: 'Shqip (SQ)', value: 'sq_AL' },
+  { label: 'Suomi (FI)', value: 'fi_fi' },
+  { label: 'Svenska (SE)', value: 'sv_se' },
+  { label: 'Thai (TH)', value: 'th_th' },
+  { label: 'Vietnamese (VN)', value: 'vi_vn' },
+  { label: 'Українська (UA)', value: 'ua' },
+  { label: 'Türkçe (TR)', value: 'tr_tr' },
+] as const) satisfies readonly LanguageDescriptor[];
+
+export const SupportedLanguages: readonly LanguageDescriptor[] = catalog;
+
+export type LanguageValue = (typeof catalog)[number]['value'];
