@@ -22,6 +22,7 @@
     "aggregateFunds": "Total Balance",
     "locale": "Language",
     "turnOffTracking": "Disable Analytics",
+    "mempoolFallbackTitle": "Allow mempool.space fallback",
     "enableHoldingLockHeading": "Turn On Storage Encryption",
     "holdingLockIntroPara": "Encrypting your storage layers on extra protection, locking down how your data sits on this device so that nobody can reach your information without your say-so.",
     "holdingLockCaveatPara": "Keep in mind, though, that this only guards entry to the wallets held in your device keychain. The wallets themselves get no separate password or added safeguard from it.",
@@ -134,7 +135,8 @@
     "coinUnitHint": "The unit every Bitcoin amount is shown in.",
     "tactileResponse": "Haptic feedback",
     "tactileResponseHint": "A gentle buzz acknowledges your taps and actions.",
-    "optOutTrackingHint": "Anonymous performance and diagnostic data stays off the record and unshared."
+    "optOutTrackingHint": "Anonymous performance and diagnostic data stays off the record and unshared.",
+    "mempoolFallbackHint": "If your Electrum servers fail, fall back to mempool.space. This can link your addresses to your IP, so it's off by default."
   },
   "outflow": {
     "fundsShortReduceAmount": "Balance is too low. Send a smaller amount or trim the fee.",

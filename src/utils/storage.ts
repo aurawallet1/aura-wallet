@@ -37,6 +37,7 @@ export const StorageKeys = {
   haptics: key('haptics'),
   notifications: key('notifications'),
   analyticsDisabled: key('analyticsDisabled'),
+  mempoolFallback: key('mempoolFallback'),
   language: key('language'),
 } as const;
 
@@ -130,6 +131,14 @@ export async function getAnalyticsDisabled(): Promise<boolean> {
 
 export async function setAnalyticsDisabled(disabled: boolean): Promise<void> {
   await persistBool(StorageKeys.analyticsDisabled, disabled);
+}
+
+export async function getMempoolFallback(): Promise<boolean> {
+  return loadBool(StorageKeys.mempoolFallback, false);
+}
+
+export async function setMempoolFallback(enabled: boolean): Promise<void> {
+  await persistBool(StorageKeys.mempoolFallback, enabled);
 }
 
 const DISPLAY_UNITS: DisplayUnit[] = ['BTC', 'sats'];

@@ -46,6 +46,12 @@ import type {
 
 const MEMPOOL_LABEL = 'mempool.space';
 
+// Off by default: don't leak derived addresses to mempool.space unless the user opts in.
+let mempoolFallbackAllowed = false;
+export const setMempoolFallbackAllowed = (value: boolean): void => {
+  mempoolFallbackAllowed = value;
+};
+
 const PRIMARY_TYPE: ScriptType = 'BIP84';
 
 const RECEIVE_BRANCH = 0;
@@ -387,7 +393,8 @@ export async function scanMnemonic(mnemonic: string, passphrase = ''): Promise<S
     let scanData: MnemonicScanData;
     try {
       scanData = await runMnemonicElectrum(seed);
-    } catch {
+    } catch (error) {
+      if (!mempoolFallbackAllowed) throw error;
       scanData = await runMnemonicMempool(seed);
     }
     serverLabel = scanData.serverLabel;
@@ -545,7 +552,8 @@ export async function scanWif(wif: string): Promise<WifScanResult> {
     let scanData: WifScanData;
     try {
       scanData = await runWifElectrum(privateKey, wif);
-    } catch {
+    } catch (error) {
+      if (!mempoolFallbackAllowed) throw error;
       scanData = await runWifMempool(privateKey, wif);
     }
     serverLabel = scanData.serverLabel;

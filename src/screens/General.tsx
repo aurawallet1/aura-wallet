@@ -34,6 +34,8 @@ const GeneralScreen: React.FC = () => {
     setHapticsEnabled,
     analyticsDisabled,
     setAnalyticsDisabled,
+    mempoolFallback,
+    setMempoolFallback,
     isRTL,
   } = useWallets();
 
@@ -125,7 +127,12 @@ const GeneralScreen: React.FC = () => {
           </View>
           <Switch value={hapticsEnabled} onValueChange={onHapticsToggle} style={switchMirror} />
         </View>
-        <View style={[styles.row, { backgroundColor: cellBg }, styles.rowLast]}>
+        <View
+          style={[
+            styles.row,
+            { backgroundColor: cellBg, borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: palette.fieldBorder },
+          ]}
+        >
           <View style={styles.body}>
             <Text style={[styles.rowTitle, { color: palette.fg }, directionalText(isRTL)]}>
               {loc.prefs.turnOffTracking}
@@ -135,6 +142,17 @@ const GeneralScreen: React.FC = () => {
             </Text>
           </View>
           <Switch value={analyticsDisabled} onValueChange={setAnalyticsDisabled} style={switchMirror} />
+        </View>
+        <View style={[styles.row, { backgroundColor: cellBg }, styles.rowLast]}>
+          <View style={styles.body}>
+            <Text style={[styles.rowTitle, { color: palette.fg }, directionalText(isRTL)]}>
+              {loc.prefs.mempoolFallbackTitle}
+            </Text>
+            <Text style={[styles.rowSubtitle, { color: palette.altText }, directionalText(isRTL)]}>
+              {loc.appGeneral.mempoolFallbackHint}
+            </Text>
+          </View>
+          <Switch value={mempoolFallback} onValueChange={setMempoolFallback} style={switchMirror} />
         </View>
       </View>
 

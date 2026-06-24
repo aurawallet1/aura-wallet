@@ -21,7 +21,7 @@ import type {
 } from '../types/index';
 import { DEFAULT_EXPLORER_URL } from '../network/blockExplorers';
 import { fetchBtcRate } from '../network/rates';
-import { scanMnemonic, scanMultisig } from './scan';
+import { scanMnemonic, scanMultisig, setMempoolFallbackAllowed } from './scan';
 import { firstReceiveAddress } from './derivation';
 import {
   decryptBlob,
@@ -50,6 +50,7 @@ import {
   setCachedRate,
   setHapticsEnabled as persistHapticsEnabled,
   setAnalyticsDisabled as persistAnalyticsDisabled,
+  setMempoolFallback as persistMempoolFallback,
   getCachedRate,
   clearAll,
 } from '../utils/storage';
@@ -344,6 +345,8 @@ export interface WalletsContextValue {
   setHapticsEnabled: (value: boolean) => void;
   analyticsDisabled: boolean;
   setAnalyticsDisabled: (value: boolean) => void;
+  mempoolFallback: boolean;
+  setMempoolFallback: (value: boolean) => void;
   refreshWallet: (id: string) => Promise<void>;
   refreshAllWallets: () => Promise<void>;
   frozenUtxos: Set<string>;
@@ -396,6 +399,8 @@ export const WalletsContext = createContext<WalletsContextValue>({
   setHapticsEnabled: noop,
   analyticsDisabled: false,
   setAnalyticsDisabled: noop,
+  mempoolFallback: false,
+  setMempoolFallback: noop,
   refreshWallet: asyncNoop,
   refreshAllWallets: asyncNoop,
   frozenUtxos: new Set(),
@@ -462,6 +467,13 @@ export const WalletsProvider = ({ children }: { children: React.ReactNode }) => 
     setHapticsEnabledState(value);
     setHapticsOn(value);
     persistHapticsEnabled(value).catch(() => {});
+  }, []);
+
+  const [mempoolFallback, setMempoolFallbackState] = useState(false);
+  const setMempoolFallback = useCallback((value: boolean) => {
+    setMempoolFallbackState(value);
+    setMempoolFallbackAllowed(value);
+    persistMempoolFallback(value).catch(() => {});
   }, []);
 
   const [analyticsDisabled, setAnalyticsDisabledState] = useState(false);
@@ -574,6 +586,7 @@ export const WalletsProvider = ({ children }: { children: React.ReactNode }) => 
           fzRaw,
           ulRaw,
           langRaw,
+          mfRaw,
         ] = await Promise.all([
           loadString(StorageKeys.fiatCurrency),
           loadString(StorageKeys.blockExplorer),
@@ -585,6 +598,7 @@ export const WalletsProvider = ({ children }: { children: React.ReactNode }) => 
           loadString(StorageKeys.frozenUtxos),
           loadString(StorageKeys.utxoLabels),
           loadString(StorageKeys.language),
+          loadString(StorageKeys.mempoolFallback),
         ]);
 
         if (curRaw && FIAT_BY_KEY[curRaw]) setCurrencyState(FIAT_BY_KEY[curRaw]);
@@ -602,6 +616,10 @@ export const WalletsProvider = ({ children }: { children: React.ReactNode }) => 
           setHapticsOn(false);
         }
         if (anaRaw === '1') setAnalyticsDisabledState(true);
+        if (mfRaw === '1') {
+          setMempoolFallbackState(true);
+          setMempoolFallbackAllowed(true);
+        }
         if (fzRaw) {
           try {
             setFrozenUtxos(new Set(JSON.parse(fzRaw) as string[]));
@@ -957,6 +975,8 @@ export const WalletsProvider = ({ children }: { children: React.ReactNode }) => 
     setHapticsEnabled,
     analyticsDisabled,
     setAnalyticsDisabled,
+    mempoolFallback,
+    setMempoolFallback,
     refreshWallet,
     refreshAllWallets,
     frozenUtxos,
