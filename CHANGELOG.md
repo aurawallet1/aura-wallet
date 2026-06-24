@@ -5,6 +5,25 @@ All notable changes to Aura Wallet are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-06-24
+
+### Security
+- Sensitive values copied to the clipboard (WIF private keys and extended public
+  keys) are now automatically cleared after 60 seconds, so a secret does not
+  linger on the shared system clipboard where other apps can read it.
+
+### Fixed
+- Corrected the crypto verification suite (`scripts/aura-vectors.test.js`): it had
+  two wrong expected values (the BIP39 Trezor seed and the BIP44 first address) and
+  its BIP143 check did not account for the version-2 transaction format. All 15
+  BIP32 / BIP39 / BIP44 / BIP49 / BIP84 / BIP143 vectors now pass, so the suite
+  reliably validates the real signing and derivation code against the specs.
+
+### Changed
+- `sighashForInput` accepts an optional transaction version (default 2) so the
+  BIP143 worked example can be checked byte-for-byte. Production transaction
+  building is unchanged — Aura still signs and broadcasts version-2 transactions.
+
 ## [1.2.0] - 2026-06-24
 
 ### Security
@@ -34,6 +53,7 @@ First public release.
 - Fully internationalized UI in 40 languages.
 - Crypto-core test suite verified against official Bitcoin (BIP) test vectors.
 
+[1.3.0]: https://github.com/aurawallet1/aura-wallet/releases/tag/v1.3.0
 [1.2.0]: https://github.com/aurawallet1/aura-wallet/releases/tag/v1.2.0
 [1.1.0]: https://github.com/aurawallet1/aura-wallet/releases/tag/v1.1.0
 [1.0.0]: https://github.com/aurawallet1/aura-wallet/releases/tag/v1.0.0

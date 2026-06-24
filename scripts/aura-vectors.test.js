@@ -120,8 +120,8 @@ function check(name, got, want) {
   check(
     'BIP39 mnemonic->seed (Trezor vector, passphrase=TREZOR)',
     bytesToHex(trezorSeed),
-    '5eb00bbddcf069084889a8ab9155568165f5c453ccb85e70811aaed6f6da5fc1' +
-      '9a5ac40b389cd370d086206dec8aa6c43daea6690f20ad3d8d48b2d2ce9e38e4',
+    'c55257c360c07c72029aebc1b53c05ed0362ada38ead3e3e9efa3708e5349553' +
+      '1f09a6987599d18264c1e1c92f2cf141630c7a3c4ab7c81b2f001698e7463b04',
   );
 
   // BIP44/49/84 spec address vectors use the same mnemonic with EMPTY passphrase.
@@ -188,7 +188,7 @@ function check(name, got, want) {
   check(
     "BIP44 m/44'/0'/0'/0/0 first receive address",
     der.encodeAddress('BIP44', bip44Node.privateKey),
-    '1LqBGSKuTNFNLAdkjbHaHEU4kwFJ1agt6h',
+    '1LqBGSKuX5yYUonjxT5qGfpUsXKYYWeabA',
   );
 
   // =====================================================================
@@ -229,7 +229,10 @@ function check(name, got, want) {
     { address: p2pkhFromHash160('3bde42dbee7e4dbe6a21b2d50ce2f0167faa8159'), value: 223450000 },
   ];
 
-  const sighashHex = sign.sighashForInput(inputs, specOutputs, 1, 17);
+  // The BIP143 worked example transaction is version 1; Aura builds version-2
+  // transactions in production, so we pass version=1 here to verify the sighash
+  // algorithm against the spec byte-for-byte (the only difference is nVersion).
+  const sighashHex = sign.sighashForInput(inputs, specOutputs, 1, 17, 1);
   check(
     'BIP143 P2WPKH sighash (input #1) matches spec',
     sighashHex,

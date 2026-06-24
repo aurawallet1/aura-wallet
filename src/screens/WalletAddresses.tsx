@@ -15,6 +15,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { MenuAction } from '@react-native-menu/menu';
 
 import { COLORS, ms } from '../theme';
+import { copyEphemeralSecret } from '../utils/clipboard';
 import loc from '../i18n';
 import type {
   AddressBranch,
@@ -306,7 +307,8 @@ export const WalletAddressesScreen = (): React.ReactElement => {
       } else if (event === 'signVerify') {
         navigation.navigate('SignVerify', { address: item.address, wif: item.wif });
       } else if (event === 'copyWif' && item.wif) {
-        Clipboard.setString(item.wif);
+        // WIF is a spendable private key — auto-clear it from the clipboard.
+        copyEphemeralSecret(item.wif);
         triggerHaptic();
       }
     },

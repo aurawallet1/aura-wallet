@@ -13,6 +13,11 @@ const P2SH_VERSION = 0x05;
 const WITNESS_V0 = 0;
 
 const SIGHASH_ALL = 0x01;
+// Transactions are built as version 2 (BIP68). The sighash preimage must commit
+// to the same nVersion the final transaction uses, so this is the single source
+// of truth for both. Exposed through the signing helpers so the BIP143 spec
+// worked example (which uses version 1) can be verified directly in tests.
+const TX_VERSION = 2;
 const DEFAULT_SEQUENCE = 0xffffffff;
 const RBF_SEQUENCE = 0xfffffffd;
 const SEGWIT_MARKER = 0x00;
@@ -179,9 +184,10 @@ const legacySighash = (
   outputs: SigningOutput[],
   index: number,
   locktime: number,
+  version: number,
 ): Uint8Array => {
   const chunks: Uint8Array[] = [];
-  chunks.push(uint32LE(2));
+  chunks.push(uint32LE(version));
   chunks.push(varint(prepared.length));
   for (let i = 0; i < prepared.length; i += 1) {
     const current = prepared[i];
@@ -205,6 +211,7 @@ const segwitSighash = (
   outputs: SigningOutput[],
   index: number,
   locktime: number,
+  version: number,
 ): Uint8Array => {
   const prevouts: Uint8Array[] = [];
   const sequences: Uint8Array[] = [];
@@ -220,7 +227,7 @@ const segwitSighash = (
   const scriptCode = witnessProgramScriptCode(current.publicKeyHash);
 
   const preimage = concatBytes(
-    uint32LE(2),
+    uint32LE(version),
     hashPrevouts,
     hashSequence,
     outpoint(current.input.txid, current.input.vout),
@@ -272,12 +279,12 @@ export const buildSignedTransaction = (
     const type = item.input.scriptType;
 
     if (type === 'P2PKH') {
-      const hash = legacySighash(prepared, outputs, i, locktime);
+      const hash = legacySighash(prepared, outputs, i, locktime, TX_VERSION);
       const signature = signHash(hash, item.privateKey);
       scriptSigs[i] = varBytes(concatBytes(varBytes(signature), varBytes(item.publicKey)));
       witnesses[i] = varint(0);
     } else {
-      const hash = segwitSighash(prepared, outputs, i, locktime);
+      const hash = segwitSighash(prepared, outputs, i, locktime, TX_VERSION);
       const signature = signHash(hash, item.privateKey);
       scriptSigs[i] = finalScriptSigForSegwit(item);
       witnesses[i] = concatBytes(varint(2), varBytes(signature), varBytes(item.publicKey));
@@ -291,7 +298,7 @@ export const buildSignedTransaction = (
   const serializedOutputs = serializeOutputs(outputs);
 
   const legacyChunks: Uint8Array[] = [];
-  legacyChunks.push(uint32LE(2));
+  legacyChunks.push(uint32LE(TX_VERSION));
   legacyChunks.push(varint(prepared.length));
   for (let i = 0; i < prepared.length; i += 1) {
     legacyChunks.push(outpoint(prepared[i].input.txid, prepared[i].input.vout));
@@ -304,7 +311,7 @@ export const buildSignedTransaction = (
   const baseSerialization = concatBytes(...legacyChunks);
 
   const witnessChunks: Uint8Array[] = [];
-  witnessChunks.push(uint32LE(2));
+  witnessChunks.push(uint32LE(TX_VERSION));
   witnessChunks.push(uint8(SEGWIT_MARKER));
   witnessChunks.push(uint8(SEGWIT_FLAG));
   witnessChunks.push(varint(prepared.length));
@@ -343,6 +350,7 @@ export const sighashForInput = (
   outputs: SigningOutput[],
   index: number,
   locktime = 0,
+  version: number = TX_VERSION,
 ): string => {
   if (index < 0 || index >= inputs.length) {
     throw networkError('requestStatusFault', index);
@@ -351,8 +359,8 @@ export const sighashForInput = (
   const target = prepared[index];
   const hash =
     target.input.scriptType === 'P2PKH'
-      ? legacySighash(prepared, outputs, index, locktime)
-      : segwitSighash(prepared, outputs, index, locktime);
+      ? legacySighash(prepared, outputs, index, locktime, version)
+      : segwitSighash(prepared, outputs, index, locktime, version);
   for (const item of prepared) {
     item.privateKey.fill(0);
   }

@@ -1,7 +1,6 @@
 import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import {
   Animated,
-  Clipboard,
   Easing,
   LayoutAnimation,
   Pressable,
@@ -24,6 +23,7 @@ import { QrStaggerReveal } from '../components/QrStaggerReveal';
 import { useWallets, type WalletEntry } from '../wallets/context';
 import { accountExtendedPublicKey } from '../wallets/derivation';
 import { triggerHaptic } from '../utils/haptics';
+import { copyEphemeralSecret } from '../utils/clipboard';
 import type { RootStackParamList } from '../navigation/types';
 import type { ScanResponse, ScriptType, WifScanResult } from '../types/index';
 
@@ -128,7 +128,9 @@ export const WalletXpubScreen = (): React.ReactElement => {
   }, [navigation, palette.fg, palette.customHeader]);
 
   const handleCopy = () => {
-    Clipboard.setString(extendedKey);
+    // An xpub reveals every address and the full balance history of this
+    // wallet — auto-clear it from the shared clipboard after a short delay.
+    copyEphemeralSecret(extendedKey);
     triggerHaptic();
     LayoutAnimation.configureNext(RESIZE_TRANSITION);
     setCopied(true);
