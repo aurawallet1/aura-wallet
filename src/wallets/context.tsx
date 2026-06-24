@@ -236,10 +236,16 @@ export const enableEncryption = async (
       await removeKey(StorageKeys.encryptedHolding);
       return false;
     }
+    // Confirm the prior copy is actually gone before declaring success — a
+    // swallowed delete must not leave a weaker copy behind.
+    await removeKey(StorageKeys.wallets);
+    if ((await loadString(StorageKeys.wallets)) !== null) {
+      await removeKey(StorageKeys.encryptedHolding);
+      return false;
+    }
     await persistString(StorageKeys.holdingEncrypted, '1');
     cachedPassword = password;
     usedBucketNum = 0;
-    await removeKey(StorageKeys.wallets);
     return true;
   } catch {
     return false;
@@ -860,11 +866,13 @@ export const WalletsProvider = ({ children }: { children: React.ReactNode }) => 
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', state => {
-      if (state === 'background') {
+      if (state === 'inactive' || state === 'background') {
         wasBackground.current = true;
+        // Lock on the way out so the app-switcher snapshot and the next return
+        // show the lock screen instead of wallet contents.
+        if (bioEnabled || pwdEnabled) setLocked(true);
       } else if (state === 'active' && wasBackground.current) {
         wasBackground.current = false;
-        if (bioEnabled || pwdEnabled) setLocked(true);
       }
     });
     return () => subscription.remove();
