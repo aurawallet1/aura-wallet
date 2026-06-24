@@ -26,6 +26,26 @@ You hold your own keys — they are generated on the device and never leave it.
 
 ---
 
+## About us
+
+Aura Wallet is built by a **small, independent team** with one belief at its core:
+**you should be the only person who can touch your money.**
+
+We started Aura because most "Bitcoin wallets" ask you to trust a server, a company,
+or a black box you can't inspect. We wanted the opposite — a wallet where the keys
+are generated on your phone, never leave it, and where *anyone* can read exactly how
+that works.
+
+That is why the whole project is **fully open source** under the MIT license. Every
+line that derives your keys or signs your transactions is public, auditable, and
+continuously checked against official Bitcoin (BIP) test vectors — no hidden servers,
+no custody, no tracking on the crypto path.
+
+We are early and building in the open. If you share these values, read the code, try
+the app, open an issue, or send a pull request — you're welcome here.
+
+---
+
 ## Features
 
 - **HD wallets** — BIP32 / BIP39 / BIP44 / BIP49 / BIP84 (Legacy, Nested SegWit, Native SegWit).
