@@ -1,6 +1,5 @@
 import React, { useLayoutEffect } from 'react';
 import {
-  Clipboard,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -16,6 +15,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import MaterialIcons from '@react-native-vector-icons/material-icons';
 
 import { COLORS, SIZE, SPACING, TYPE, type ColorScheme } from '../theme';
+import { copyEphemeralSecret } from '../utils/clipboard';
 import loc from '../i18n';
 import QRCode from '../components/QRCode';
 import QrStaggerReveal from '../components/QrStaggerReveal';
@@ -139,7 +139,8 @@ export const WalletExportScreen = (): React.ReactElement => {
   );
 
   const copyToClipboard = (value: string): void => {
-    Clipboard.setString(value);
+    // descriptor (contains seeds) and WIF are secrets — auto-clear them.
+    copyEphemeralSecret(value);
     triggerHaptic();
   };
 
