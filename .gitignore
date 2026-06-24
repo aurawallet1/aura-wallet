@@ -1,3 +1,19 @@
+# Secrets & key material — never commit these
+#
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.mobileprovision
+*.mnemonic
+*.seed
+secrets.json
+secrets.*.json
+google-services.json
+GoogleService-Info.plist
+
 # OSX
 #
 .DS_Store
