@@ -37,6 +37,8 @@ const CLIENT_NAME = "aura";
 const CONNECT_TIMEOUT_MS = 12000;
 const REQUEST_TIMEOUT_MS = 25000;
 const IDLE_TIMEOUT_MS = 60000;
+// Cap the receive buffer so a malicious server can't stream unbounded data and exhaust memory.
+const MAX_BUFFER_CHARS = 16 * 1024 * 1024;
 
 export interface ElectrumServer {
   host: string;
@@ -1319,6 +1321,10 @@ export class ElectrumClient {
 
   private onData(chunk: string): void {
     this.buffer += chunk;
+    if (this.buffer.length > MAX_BUFFER_CHARS) {
+      this.teardown(new Error("Electrum response exceeded buffer limit"));
+      return;
+    }
     let newlineIndex = this.buffer.indexOf("\n");
     while (newlineIndex >= 0) {
       const line = this.buffer.slice(0, newlineIndex).trim();
