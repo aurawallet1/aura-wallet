@@ -19,6 +19,9 @@ const WORD_BYTES = 4;
 const ARGON2_TIME = 3;
 const ARGON2_MEMORY = 19456;
 const ARGON2_PARALLELISM = 1;
+const ARGON2_MAX_TIME = 10;
+const ARGON2_MAX_MEMORY = 65536;
+const ARGON2_MAX_PARALLELISM = 4;
 const HKDF_INFO = 'aura/holding/hkdf/v2';
 const KDF_ARGON2 = 'argon2id';
 const KDF_HKDF = 'hkdf-sha256';
@@ -105,10 +108,20 @@ const deriveArgon2 = (
   t: number,
   m: number,
   p: number,
-): DerivedKeys =>
-  splitDerived(
+): DerivedKeys => {
+  // Reject out-of-range KDF params (a tampered envelope must not be able to
+  // request unbounded memory/time and hang the app).
+  if (
+    !Number.isInteger(t) || t < 1 || t > ARGON2_MAX_TIME ||
+    !Number.isInteger(m) || m < 1 || m > ARGON2_MAX_MEMORY ||
+    !Number.isInteger(p) || p < 1 || p > ARGON2_MAX_PARALLELISM
+  ) {
+    throw new EncryptionError('argon2 parameters out of range');
+  }
+  return splitDerived(
     argon2id(textEncoder.encode(passphrase), salt, { t, m, p, dkLen: DERIVED_BYTES }),
   );
+};
 
 const deriveHkdf = (keyHex: string, salt: Uint8Array): DerivedKeys =>
   splitDerived(

@@ -220,7 +220,8 @@ const persistWallets = async (next: WalletEntry[]): Promise<void> => {
     await persistString(StorageKeys.wallets, sealWithKey(JSON.stringify({ wallets: next }), key));
     return;
   }
-  await persistJson<WalletEntry[]>(StorageKeys.wallets, next);
+  // Fail closed — never write the mnemonic/passphrase/WIF as cleartext.
+  throw new Error('secure storage unavailable');
 };
 
 export const enableEncryption = async (
@@ -248,11 +249,8 @@ export const enableEncryption = async (
 export const disableEncryption = async (wallets: WalletEntry[]): Promise<void> => {
   try {
     const key = await resolveDeviceKey();
-    if (key) {
-      await persistString(StorageKeys.wallets, sealWithKey(JSON.stringify({ wallets }), key));
-    } else {
-      await persistJson<WalletEntry[]>(StorageKeys.wallets, wallets);
-    }
+    if (!key) return;
+    await persistString(StorageKeys.wallets, sealWithKey(JSON.stringify({ wallets }), key));
     await removeKey(StorageKeys.encryptedHolding);
     await persistString(StorageKeys.holdingEncrypted, '');
     cachedPassword = false;

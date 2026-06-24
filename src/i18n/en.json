@@ -368,7 +368,8 @@
   "pwPrompt": {
     "reenterSecretField": "Confirm Password",
     "decoyHoldingKeyGuidance": "Pick the password you'll use to unlock your storage. The fake storage password must differ from the one on your main storage.",
-    "wrongSecretRetry": "That password's wrong. Please try again."
+    "wrongSecretRetry": "That password's wrong. Please try again.",
+    "minLengthHint": "Use at least 8 characters."
   },
   "lockGate": {
     "touchToReveal": "Tap to unlock"

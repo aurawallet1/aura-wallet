@@ -29,6 +29,7 @@ type PromptPasswordNavigation = NativeStackNavigationProp<RootStackParamList, 'P
 type PromptPasswordRoute = RouteProp<RootStackParamList, 'PromptPasswordSheet'>;
 
 const ALERT_TITLE = 'Aura';
+const MIN_PASSWORD_LENGTH = 8;
 const PLACEHOLDER_COLOR = '#81868e';
 const EXPLAIN_LIGHT_FG = '#2f5fb3';
 const SHAKE_KEYFRAMES = [10, -10, 5, -5, 0];
@@ -112,6 +113,11 @@ const PromptPasswordSheetScreen = (): React.ReactElement => {
       runShake();
       return;
     }
+    if (isTwoField && password.length < MIN_PASSWORD_LENGTH) {
+      runShake();
+      Alert.alert(ALERT_TITLE, loc.pwPrompt.minLengthHint);
+      return;
+    }
 
     setIsLoading(true);
     try {
@@ -167,7 +173,11 @@ const PromptPasswordSheetScreen = (): React.ReactElement => {
 
   const explainFg = isDark ? palette.fg : EXPLAIN_LIGHT_FG;
   const showCreateExplanation = mode === 'create' && showExplanation;
-  const submitDisabled = isLoading || !password || (mode === 'create' && !confirmPassword);
+  const submitDisabled =
+    isLoading ||
+    !password ||
+    (mode === 'create' && !confirmPassword) ||
+    (isTwoField && password.length < MIN_PASSWORD_LENGTH);
 
   const inputStyle = {
     backgroundColor: palette.inputBg,
