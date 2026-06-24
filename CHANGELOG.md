@@ -13,9 +13,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added Dependabot (`.github/dependabot.yml`) for automated dependency security updates
   across npm, CocoaPods, and GitHub Actions.
 
-### Added
-- `CONTRIBUTING.md` — setup, testing, lint, security, and translation guidelines.
-
 ## [1.1.0] - 2026-06-24
 
 ### Added
