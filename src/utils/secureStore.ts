@@ -9,7 +9,8 @@ const baseOptions = { service: SERVICE };
 
 const setOptions = (requireBiometrics: boolean) => ({
   service: SERVICE,
-  accessible: Keychain.ACCESSIBLE.WHEN_UNLOCKED_THIS_DEVICE_ONLY,
+  // Require a device passcode to be set — the key won't exist on an unprotected device.
+  accessible: Keychain.ACCESSIBLE.WHEN_PASSCODE_SET_THIS_DEVICE_ONLY,
   ...(requireBiometrics
     ? { accessControl: Keychain.ACCESS_CONTROL.BIOMETRY_CURRENT_SET }
     : {}),

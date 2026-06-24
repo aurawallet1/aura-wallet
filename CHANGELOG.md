@@ -5,6 +5,11 @@ All notable changes to Aura Wallet are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.3] - 2026-06-25
+
+### Security
+- Store the device key with `WhenPasscodeSetThisDeviceOnly`, so it only exists on a passcode-protected device (applies to new keys; existing keys are left in place to avoid any lockout).
+
 ## [1.3.2] - 2026-06-25
 
 ### Security
@@ -67,6 +72,7 @@ First public release.
 - Fully internationalized UI in 40 languages.
 - Crypto-core test suite verified against official Bitcoin (BIP) test vectors.
 
+[1.3.3]: https://github.com/aurawallet1/aura-wallet/releases/tag/v1.3.3
 [1.3.2]: https://github.com/aurawallet1/aura-wallet/releases/tag/v1.3.2
 [1.3.1]: https://github.com/aurawallet1/aura-wallet/releases/tag/v1.3.1
 [1.3.0]: https://github.com/aurawallet1/aura-wallet/releases/tag/v1.3.0
