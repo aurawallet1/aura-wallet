@@ -22,7 +22,7 @@ You hold your own keys — they are generated on the device and never leave it.
 - ✍️ **Local signing.** Transactions are built and signed entirely on-device (BIP143). Keys never touch the wire.
 - 🧪 **Open source & verifiable.** Released under the MIT license. The cryptographic core is covered by tests that run against the app's *own* code using official BIP test vectors — see [Testing](#testing).
 
-> **Status:** early and actively developed (`v0.0.1`). Review the code, try it, and open issues — feedback is welcome.
+> **Status:** first public release (`v1.0.0`), actively developed. Review the code, try it, and open issues — feedback is welcome.
 
 ---
 
@@ -43,6 +43,8 @@ no custody, no tracking on the crypto path.
 
 We are early and building in the open. If you share these values, read the code, try
 the app, open an issue, or send a pull request — you're welcome here.
+
+**Project home:** <https://github.com/aurawallet1/aura-wallet>
 
 ---
 
