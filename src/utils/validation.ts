@@ -62,7 +62,9 @@ export function isMainnetWif(text: string): boolean {
   try {
     const decoded = base58checkCodec.decode(candidate);
     if (decoded[0] !== WIF_VERSION_BYTE) return false;
-    if (decoded.length === WIF_UNCOMPRESSED_LENGTH) return true;
+    // Only compressed WIFs are accepted: derivation always uses the compressed
+    // pubkey, so an uncompressed key would resolve to different addresses than the
+    // ones holding its funds. Rejecting avoids silently importing to the wrong set.
     if (decoded.length === WIF_COMPRESSED_LENGTH) {
       return decoded[WIF_UNCOMPRESSED_LENGTH] === WIF_COMPRESSION_FLAG;
     }

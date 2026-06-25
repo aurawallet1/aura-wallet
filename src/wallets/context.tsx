@@ -257,6 +257,11 @@ export const disableEncryption = async (wallets: WalletEntry[]): Promise<void> =
   try {
     const key = await resolveDeviceKey();
     if (!key) return;
+    // Removing the holding wipes EVERY bucket. Never do this from a non-primary or
+    // decoy session, or while a second (hidden) holding exists — it would destroy
+    // the real holding. Only disable from the sole primary bucket.
+    const buckets = await readBuckets();
+    if (usedBucketNum !== 0 || buckets.length > 1) return;
     await persistString(StorageKeys.wallets, sealWithKey(JSON.stringify({ wallets }), key));
     await removeKey(StorageKeys.encryptedHolding);
     await persistString(StorageKeys.holdingEncrypted, '');
