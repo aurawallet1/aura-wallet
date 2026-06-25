@@ -39,6 +39,7 @@ import { useWallets, type WalletEntry } from '../wallets/context';
 import { fetchBtcRate } from '../network/rates';
 import { formatBtcTrim } from '../utils/currency';
 import { isValidBitcoinAddress } from '../utils/validation';
+import { parsePaymentUri } from '../utils/bip21';
 import { triggerHaptic } from '../utils/haptics';
 import type { RootStackParamList, SendStackParamList } from '../navigation/types';
 import type { Utxo } from '../types/index';
@@ -429,7 +430,15 @@ export const SendAmountScreen = (): React.ReactElement => {
       navigation
         .getParent<NativeStackNavigationProp<RootStackParamList>>()
         ?.navigate('ScanQRCode', {
-          onScan: (value: string) => patchRecipient(index, { address: value, name: '' }),
+          onScan: (value: string) => {
+            const parsed = parsePaymentUri(value);
+            const patch: Partial<Recipient> = { address: parsed.address, name: parsed.label ?? '' };
+            if (parsed.amountBtc) {
+              patch.amount = parsed.amountBtc;
+              patch.unit = 'BTC';
+            }
+            patchRecipient(index, patch);
+          },
         });
     },
     [navigation, patchRecipient],
