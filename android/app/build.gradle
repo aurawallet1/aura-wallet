@@ -96,6 +96,8 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            // Dev server (Metro) needs cleartext to localhost.
+            manifestPlaceholders = [usesCleartextTraffic: "true"]
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
@@ -103,6 +105,8 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            // Production is TLS-only — block plaintext HTTP traffic.
+            manifestPlaceholders = [usesCleartextTraffic: "false"]
         }
     }
 }

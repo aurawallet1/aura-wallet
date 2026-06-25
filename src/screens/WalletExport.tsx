@@ -54,13 +54,12 @@ const composeHoldingDescriptor = (entry: WalletEntry): string => {
     `Policy: ${holding.m} of ${holding.n}`,
     `Derivation: ${derivation}`,
     'Format: P2WSH',
+    `Cosigners: ${holding.n}`,
     '',
   ];
-  for (const seed of holding.mnemonics) {
-    lines.push(`seed: ${seed}`);
-    lines.push('# warning! sensitive information, do not disclose ^^^ ');
-    lines.push('');
-  }
+  // Cosigner seeds are intentionally NOT exported. Bundling every seed into a
+  // single file/QR defeats the whole point of multisig (one capture = full
+  // compromise). Each cosigner's seed must be backed up on its own device.
   return lines.join('\n');
 };
 
