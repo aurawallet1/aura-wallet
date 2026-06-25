@@ -356,7 +356,7 @@
     "mnemonicStretchHeading": "Seed-härledning",
     "mnemonicStretchBlurb": "PBKDF2-HMAC-SHA512 körs över 2 048 iterationer – precis vad BIP-39-standarden kräver.",
     "localKeyAssuranceHeading": "Dina nycklar stannar alltid på din telefon",
-    "localKeyAssuranceBlurb": "Aura tittar på blockkedjan genom publika Electrum-servrar som du själv väljer – inga konton, inga Aura-servrar, ingen analys.",
+    "localKeyAssuranceBlurb": "Aura tittar på blockkedjan genom publika Electrum-servrar som du själv väljer – inga konton och ingen analys.",
     "transparentCodeHeading": "Aura är öppen källkod.",
     "auditableRepoBlurb": "All Auras kod finns i ett enda publikt arkiv. Läs den, granska den och bekräfta själv exakt vad din plånbok gör – hur nycklar skapas, hur din seed härleds, och att Aura aldrig kan se dina medel.",
     "browseRepoAction": "Visa på GitHub"

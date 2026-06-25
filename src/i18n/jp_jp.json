@@ -356,7 +356,7 @@
     "mnemonicStretchHeading": "シードの導出",
     "mnemonicStretchBlurb": "PBKDF2-HMAC-SHA512、2,048回の反復 — BIP-39標準が定めるとおりに。",
     "localKeyAssuranceHeading": "鍵があなたの端末から出ることはありません",
-    "localKeyAssuranceBlurb": "Auraは、あなたが選んだ公開Electrumサーバーを通じてブロックチェーンを読み取ります — アカウントなし、Auraのサーバーなし、分析なし。",
+    "localKeyAssuranceBlurb": "Auraは、あなたが選んだ公開Electrumサーバーを通じてブロックチェーンを読み取ります — アカウントなし、分析なし。",
     "transparentCodeHeading": "Auraはオープンソースです。",
     "auditableRepoBlurb": "Auraのコードは一行残らず1つの公開リポジトリに存在します。読んで、監査して、ウォレットが何をするのかを正確に検証してください — 鍵がどのように生成され、シードがどのように導出され、そしてAuraが決してあなたの資金を見られないことを。",
     "browseRepoAction": "GitHubで表示"

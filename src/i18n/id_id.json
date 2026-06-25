@@ -356,7 +356,7 @@
     "mnemonicStretchHeading": "Derivasi Seed",
     "mnemonicStretchBlurb": "PBKDF2-HMAC-SHA512 dijalankan selama 2.048 iterasi — persis seperti yang diharuskan oleh standar BIP-39.",
     "localKeyAssuranceHeading": "Kunci Anda selalu tetap di ponsel Anda",
-    "localKeyAssuranceBlurb": "Aura melihat blockchain melalui server Electrum publik pilihan Anda — tanpa akun, tanpa server Aura, tanpa analitik.",
+    "localKeyAssuranceBlurb": "Aura melihat blockchain melalui server Electrum publik pilihan Anda — tanpa akun, tanpa analitik.",
     "transparentCodeHeading": "Aura adalah sumber terbuka.",
     "auditableRepoBlurb": "Semua kode Aura berada dalam satu repositori publik. Baca, audit, dan pastikan sendiri persis apa yang dilakukan dompet Anda — bagaimana kunci tercipta, bagaimana seed Anda diturunkan, dan bahwa Aura tidak akan pernah dapat melihat dana Anda.",
     "browseRepoAction": "Lihat di GitHub"

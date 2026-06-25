@@ -356,7 +356,7 @@
     "mnemonicStretchHeading": "גזירת סיד",
     "mnemonicStretchBlurb": "PBKDF2-HMAC-SHA512 מורץ על פני 2,048 איטרציות — בדיוק כפי שתקן BIP-39 דורש.",
     "localKeyAssuranceHeading": "המפתחות שלך נשארים בטלפון שלך, תמיד",
-    "localKeyAssuranceBlurb": "Aura מסתכלת על הבלוקצ'יין דרך שרתי Electrum ציבוריים לבחירתך — ללא חשבונות, ללא שרתי Aura, ללא ניתוח נתונים.",
+    "localKeyAssuranceBlurb": "Aura מסתכלת על הבלוקצ'יין דרך שרתי Electrum ציבוריים לבחירתך — ללא חשבונות, ללא ניתוח נתונים.",
     "transparentCodeHeading": "Aura היא קוד פתוח.",
     "auditableRepoBlurb": "כל הקוד של Aura נמצא במאגר ציבורי יחיד. קרא אותו, בקר אותו, וודא בעצמך מה בדיוק הארנק שלך עושה — כיצד נוצרים המפתחות, כיצד נגזר הסיד שלך, ושל-Aura אין דרך לראות את הכספים שלך לעולם.",
     "browseRepoAction": "צפה ב-GitHub"

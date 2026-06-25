@@ -356,7 +356,7 @@
     "mnemonicStretchHeading": "Odvození seedu",
     "mnemonicStretchBlurb": "PBKDF2-HMAC-SHA512 spuštěný přes 2 048 iterací — přesně to, co standard BIP-39 vyžaduje.",
     "localKeyAssuranceHeading": "Vaše klíče zůstávají na vašem telefonu, vždy",
-    "localKeyAssuranceBlurb": "Aura nahlíží na blockchain přes veřejné servery Electrum dle vašeho výběru — žádné účty, žádné servery Aury, žádná analytika.",
+    "localKeyAssuranceBlurb": "Aura nahlíží na blockchain přes veřejné servery Electrum dle vašeho výběru — žádné účty, žádná analytika.",
     "transparentCodeHeading": "Aura má otevřený zdrojový kód.",
     "auditableRepoBlurb": "Veškerý kód Aury se nachází v jediném veřejném repozitáři. Přečtěte si ho, prověřte ho a sami se přesvědčte, co přesně vaše peněženka dělá — jak vznikají klíče, jak je odvozen váš seed a že Aura nikdy nemůže spatřit vaše prostředky.",
     "browseRepoAction": "Zobrazit na GitHubu"

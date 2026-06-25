@@ -356,7 +356,7 @@
     "mnemonicStretchHeading": "Tohum Türetme",
     "mnemonicStretchBlurb": "PBKDF2-HMAC-SHA512, 2.048 yineleme boyunca çalıştırılır — tam olarak BIP-39 standardının gerektirdiği gibi.",
     "localKeyAssuranceHeading": "Anahtarlarınız her zaman telefonunuzda kalır",
-    "localKeyAssuranceBlurb": "Aura, blok zincirine sizin seçtiğiniz herkese açık Electrum sunucuları üzerinden bakar — hesap yok, Aura sunucusu yok, analiz yok.",
+    "localKeyAssuranceBlurb": "Aura, blok zincirine sizin seçtiğiniz herkese açık Electrum sunucuları üzerinden bakar — hesap yok ve analiz yok.",
     "transparentCodeHeading": "Aura açık kaynaktır.",
     "auditableRepoBlurb": "Aura'nın tüm kodu tek bir herkese açık depoda yer alır. Okuyun, denetleyin ve cüzdanınızın tam olarak ne yaptığını kendiniz doğrulayın — anahtarların nasıl oluştuğunu, tohumunuzun nasıl türetildiğini ve Aura'nın fonlarınızı asla göremeyeceğini.",
     "browseRepoAction": "GitHub'da Görüntüle"

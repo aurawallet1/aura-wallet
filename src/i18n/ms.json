@@ -356,7 +356,7 @@
     "mnemonicStretchHeading": "Terbitan Seed",
     "mnemonicStretchBlurb": "PBKDF2-HMAC-SHA512 dijalankan sebanyak 2,048 lelaran — tepat seperti yang ditetapkan oleh piawaian BIP-39.",
     "localKeyAssuranceHeading": "Kunci anda kekal pada telefon anda, sentiasa",
-    "localKeyAssuranceBlurb": "Aura melihat rantaian blok menerusi pelayan Electrum awam pilihan anda — tiada akaun, tiada pelayan Aura, tiada analitik.",
+    "localKeyAssuranceBlurb": "Aura melihat rantaian blok menerusi pelayan Electrum awam pilihan anda — tiada akaun, tiada analitik.",
     "transparentCodeHeading": "Aura ialah sumber terbuka.",
     "auditableRepoBlurb": "Semua kod Aura terletak dalam satu repositori awam. Bacanya, auditnya, dan sahkan sendiri dengan tepat apa yang dompet anda lakukan — bagaimana kunci dijana, bagaimana seed anda diterbitkan, dan bahawa Aura tidak akan sekali-kali dapat melihat dana anda.",
     "browseRepoAction": "Lihat di GitHub"

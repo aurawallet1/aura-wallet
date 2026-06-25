@@ -356,7 +356,7 @@
     "mnemonicStretchHeading": "Seed származtatása",
     "mnemonicStretchBlurb": "PBKDF2-HMAC-SHA512 lefuttatva 2048 iteráción keresztül — pontosan úgy, ahogy a BIP-39 szabvány előírja.",
     "localKeyAssuranceHeading": "A kulcsaid mindig a telefonodon maradnak",
-    "localKeyAssuranceBlurb": "Az Aura az általad választott nyilvános Electrum szervereken keresztül nézi a blokkláncot — nincsenek fiókok, nincsenek Aura szerverek, nincs analitika.",
+    "localKeyAssuranceBlurb": "Az Aura az általad választott nyilvános Electrum szervereken keresztül nézi a blokkláncot — nincsenek fiókok és nincs analitika.",
     "transparentCodeHeading": "Az Aura nyílt forráskódú.",
     "auditableRepoBlurb": "Az Aura teljes kódja egyetlen nyilvános tárolóban van. Olvasd el, auditáld, és győződj meg magad arról, hogy pontosan mit csinál a tárcád — hogyan jönnek létre a kulcsok, hogyan származtatódik a seeded, és hogy az Aura soha nem láthatja a pénzedet.",
     "browseRepoAction": "Megtekintés a GitHubon"

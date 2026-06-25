@@ -356,7 +356,7 @@
     "mnemonicStretchHeading": "種子衍生",
     "mnemonicStretchBlurb": "以 PBKDF2-HMAC-SHA512 進行 2,048 次迭代運算——完全符合 BIP-39 標準的要求。",
     "localKeyAssuranceHeading": "您的金鑰始終留在您的手機上",
-    "localKeyAssuranceBlurb": "Aura 透過您所選擇的公開 Electrum 伺服器查看區塊鏈——沒有帳戶、沒有 Aura 伺服器、沒有分析追蹤。",
+    "localKeyAssuranceBlurb": "Aura 透過您所選擇的公開 Electrum 伺服器查看區塊鏈——沒有帳戶、沒有分析追蹤。",
     "transparentCodeHeading": "Aura 是開放原始碼。",
     "auditableRepoBlurb": "Aura 的所有程式碼都集中在單一的公開儲存庫中。閱讀它、審查它，並親自確認您的錢包究竟如何運作——金鑰如何產生、種子如何衍生，以及 Aura 永遠無法窺見您的資金。",
     "browseRepoAction": "在 GitHub 上檢視"

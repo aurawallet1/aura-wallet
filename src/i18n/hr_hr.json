@@ -356,7 +356,7 @@
     "mnemonicStretchHeading": "Derivacija sjemena",
     "mnemonicStretchBlurb": "PBKDF2-HMAC-SHA512 pokrenut kroz 2.048 iteracija — točno onako kako BIP-39 standard zahtijeva.",
     "localKeyAssuranceHeading": "Vaši ključevi uvijek ostaju na vašem telefonu",
-    "localKeyAssuranceBlurb": "Aura gleda blockchain kroz javne Electrum poslužitelje po vašem izboru — bez računa, bez Aurinih poslužitelja, bez analitike.",
+    "localKeyAssuranceBlurb": "Aura gleda blockchain kroz javne Electrum poslužitelje po vašem izboru — bez računa, bez analitike.",
     "transparentCodeHeading": "Aura je otvorenog koda.",
     "auditableRepoBlurb": "Sav Aurin kod nalazi se u jednom javnom repozitoriju. Pročitajte ga, provjerite i sami se uvjerite što točno vaš novčanik radi — kako ključevi nastaju, kako se izvodi vaše sjeme i da Aura nikada ne može vidjeti vaša sredstva.",
     "browseRepoAction": "Pogledaj na GitHubu"

@@ -356,7 +356,7 @@
     "mnemonicStretchHeading": "Seemne tuletamine",
     "mnemonicStretchBlurb": "PBKDF2-HMAC-SHA512 2048 iteratsiooniga — täpselt nii, nagu näeb ette BIP-39 standard.",
     "localKeyAssuranceHeading": "Sinu võtmed ei lahku kunagi su telefonist",
-    "localKeyAssuranceBlurb": "Aura loeb plokiahelat sinu valitud avalike Electrum-serverite kaudu — ei mingeid kontosid, ei mingeid Aura servereid, ei mingit analüütikat.",
+    "localKeyAssuranceBlurb": "Aura loeb plokiahelat sinu valitud avalike Electrum-serverite kaudu — ei mingeid kontosid, ei mingit analüütikat.",
     "transparentCodeHeading": "Aura on avatud lähtekoodiga.",
     "auditableRepoBlurb": "Iga rida Aura koodist asub ühes avalikus hoidlas. Loe seda, auditeeri seda ja kontrolli täpselt, mida sinu rahakott teeb — kuidas su võtmeid genereeritakse, kuidas su seemet tuletatakse ja et Aura ei näe kunagi sinu raha.",
     "browseRepoAction": "Vaata GitHubis"

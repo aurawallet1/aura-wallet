@@ -356,7 +356,7 @@
     "mnemonicStretchHeading": "Derivimi i farës",
     "mnemonicStretchBlurb": "PBKDF2-HMAC-SHA512 me 2048 përsëritje — saktësisht ashtu siç e përcakton standardi BIP-39.",
     "localKeyAssuranceHeading": "Çelësat tuaj nuk e lënë kurrë telefonin tuaj",
-    "localKeyAssuranceBlurb": "Aura e lexon blockchain-in përmes serverave publikë Electrum që zgjidhni ju — pa llogari, pa servera Aura, pa analitikë.",
+    "localKeyAssuranceBlurb": "Aura e lexon blockchain-in përmes serverave publikë Electrum që zgjidhni ju — pa llogari, pa analitikë.",
     "transparentCodeHeading": "Aura është me burim të hapur.",
     "auditableRepoBlurb": "Çdo rresht i kodit të Aura-s gjendet në një depo të vetme publike. Lexojeni, auditojeni dhe verifikoni saktësisht se çfarë bën portofoli juaj — si gjenerohen çelësat tuaj, si derivohet fara juaj dhe se Aura nuk mund t'i shohë kurrë fondet tuaja.",
     "browseRepoAction": "Shiko në GitHub"

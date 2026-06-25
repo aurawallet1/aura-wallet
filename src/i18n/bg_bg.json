@@ -356,7 +356,7 @@
     "mnemonicStretchHeading": "Деривация на сийд",
     "mnemonicStretchBlurb": "PBKDF2-HMAC-SHA512, изпълнен в 2048 итерации — точно както изисква стандартът BIP-39.",
     "localKeyAssuranceHeading": "Ключовете ви остават на телефона ви, винаги",
-    "localKeyAssuranceBlurb": "Aura гледа блокчейна през публични Electrum сървъри по ваш избор — без акаунти, без сървъри на Aura, без анализи.",
+    "localKeyAssuranceBlurb": "Aura гледа блокчейна през публични Electrum сървъри по ваш избор — без акаунти, без анализи.",
     "transparentCodeHeading": "Aura е с отворен код.",
     "auditableRepoBlurb": "Целият код на Aura се намира в едно публично хранилище. Прочетете го, одитирайте го и се убедете сами какво точно прави портфейлът ви — как се създават ключовете, как се извежда сийдът ви и че Aura никога не може да види средствата ви.",
     "browseRepoAction": "Преглед в GitHub"

@@ -356,7 +356,7 @@
     "mnemonicStretchHeading": "Dérivation de la phrase de récupération",
     "mnemonicStretchBlurb": "PBKDF2-HMAC-SHA512 exécuté sur 2 048 itérations — exactement ce qu'exige la norme BIP-39.",
     "localKeyAssuranceHeading": "Vos clés restent toujours sur votre téléphone",
-    "localKeyAssuranceBlurb": "Aura consulte la blockchain via des serveurs Electrum publics de votre choix — aucun compte, aucun serveur Aura, aucune statistique.",
+    "localKeyAssuranceBlurb": "Aura consulte la blockchain via des serveurs Electrum publics de votre choix — aucun compte, aucune statistique.",
     "transparentCodeHeading": "Aura est open source.",
     "auditableRepoBlurb": "Tout le code d'Aura se trouve dans un unique dépôt public. Lisez-le, auditez-le et vérifiez par vous-même exactement ce que fait votre portefeuille — comment les clés sont créées, comment votre phrase de récupération est dérivée, et qu'Aura ne peut jamais voir vos fonds.",
     "browseRepoAction": "Voir sur GitHub"

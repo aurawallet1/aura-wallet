@@ -356,7 +356,7 @@
     "mnemonicStretchHeading": "Siemenen johtaminen",
     "mnemonicStretchBlurb": "PBKDF2-HMAC-SHA512 ajetaan 2 048 kierroksen yli — täsmälleen siten kuin BIP-39-standardi edellyttää.",
     "localKeyAssuranceHeading": "Avaimesi pysyvät aina puhelimessasi",
-    "localKeyAssuranceBlurb": "Aura tarkastelee lohkoketjua valitsemiesi julkisten Electrum-palvelinten kautta — ei tilejä, ei Aura-palvelimia, ei analytiikkaa.",
+    "localKeyAssuranceBlurb": "Aura tarkastelee lohkoketjua valitsemiesi julkisten Electrum-palvelinten kautta — ei tilejä, ei analytiikkaa.",
     "transparentCodeHeading": "Aura on avointa lähdekoodia.",
     "auditableRepoBlurb": "Kaikki Auran koodi sijaitsee yhdessä julkisessa repositoriossa. Lue se, tarkasta se ja vahvista itse tarkalleen, mitä lompakkosi tekee — miten avaimet syntyvät, miten siemenesi johdetaan ja että Aura ei voi koskaan nähdä varojasi.",
     "browseRepoAction": "Näytä GitHubissa"

@@ -356,7 +356,7 @@
     "mnemonicStretchHeading": "Frøavledning",
     "mnemonicStretchBlurb": "PBKDF2-HMAC-SHA512 kjørt over 2 048 iterasjoner — nøyaktig det BIP-39-standarden krever.",
     "localKeyAssuranceHeading": "Nøklene dine forblir alltid på telefonen din",
-    "localKeyAssuranceBlurb": "Aura ser på blokkjeden gjennom offentlige Electrum-servere du selv velger — ingen kontoer, ingen Aura-servere, ingen analyse.",
+    "localKeyAssuranceBlurb": "Aura ser på blokkjeden gjennom offentlige Electrum-servere du selv velger — ingen kontoer, ingen analyse.",
     "transparentCodeHeading": "Aura er åpen kildekode.",
     "auditableRepoBlurb": "All Aura-kode ligger i ett enkelt offentlig repositorium. Les den, revider den og bekreft selv nøyaktig hva lommeboken din gjør — hvordan nøkler blir til, hvordan frøet ditt avledes, og at Aura aldri kan se midlene dine.",
     "browseRepoAction": "Vis på GitHub"

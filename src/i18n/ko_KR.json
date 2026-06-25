@@ -356,7 +356,7 @@
     "mnemonicStretchHeading": "시드 파생",
     "mnemonicStretchBlurb": "PBKDF2-HMAC-SHA512, 2,048회 반복 — BIP-39 표준에 명시된 그대로입니다.",
     "localKeyAssuranceHeading": "키는 절대 휴대폰을 떠나지 않습니다",
-    "localKeyAssuranceBlurb": "Aura는 사용자가 선택한 공개 Electrum 서버를 통해 블록체인을 읽습니다 — 계정 없음, Aura 서버 없음, 분석 없음.",
+    "localKeyAssuranceBlurb": "Aura는 사용자가 선택한 공개 Electrum 서버를 통해 블록체인을 읽습니다 — 계정 없음, 분석 없음.",
     "transparentCodeHeading": "Aura는 오픈 소스입니다.",
     "auditableRepoBlurb": "Aura의 코드는 한 줄도 빠짐없이 하나의 공개 저장소에 공개되어 있습니다. 직접 읽고 감사하여 지갑이 정확히 무엇을 하는지 검증하세요. 키가 어떻게 생성되는지, 시드가 어떻게 파생되는지, 그리고 Aura가 사용자의 자금을 결코 볼 수 없다는 점까지요.",
     "browseRepoAction": "GitHub에서 보기"

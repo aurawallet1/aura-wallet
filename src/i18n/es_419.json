@@ -356,7 +356,7 @@
     "mnemonicStretchHeading": "Derivación de la semilla",
     "mnemonicStretchBlurb": "PBKDF2-HMAC-SHA512 ejecutado durante 2,048 iteraciones, exactamente lo que exige el estándar BIP-39.",
     "localKeyAssuranceHeading": "Tus claves siempre permanecen en tu teléfono",
-    "localKeyAssuranceBlurb": "Aura consulta la cadena de bloques a través de servidores Electrum públicos que tú elijas: sin cuentas, sin servidores de Aura, sin análisis.",
+    "localKeyAssuranceBlurb": "Aura consulta la cadena de bloques a través de servidores Electrum públicos que tú elijas: sin cuentas, sin análisis.",
     "transparentCodeHeading": "Aura es de código abierto.",
     "auditableRepoBlurb": "Todo el código de Aura está en un único repositorio público. Léelo, audítalo y confirma por ti mismo exactamente lo que hace tu billetera: cómo se generan las claves, cómo se deriva tu semilla y que Aura nunca puede ver tus fondos.",
     "browseRepoAction": "Ver en GitHub"

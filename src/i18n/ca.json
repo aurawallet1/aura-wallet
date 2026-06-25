@@ -356,7 +356,7 @@
     "mnemonicStretchHeading": "Derivació de la llavor",
     "mnemonicStretchBlurb": "PBKDF2-HMAC-SHA512 executat al llarg de 2.048 iteracions, exactament el que demana l'estàndard BIP-39.",
     "localKeyAssuranceHeading": "Les teves claus es mantenen sempre al teu telèfon",
-    "localKeyAssuranceBlurb": "Aura observa la cadena de blocs a través de servidors Electrum públics que tu tries: sense comptes, sense servidors d'Aura, sense analítica.",
+    "localKeyAssuranceBlurb": "Aura observa la cadena de blocs a través de servidors Electrum públics que tu tries: sense comptes, sense analítica.",
     "transparentCodeHeading": "Aura és de codi obert.",
     "auditableRepoBlurb": "Tot el codi d'Aura es troba en un únic repositori públic. Llegeix-lo, audita'l i comprova per tu mateix exactament què fa la teva cartera: com es generen les claus, com es deriva la teva llavor i que Aura mai pot veure els teus fons.",
     "browseRepoAction": "Veure a GitHub"

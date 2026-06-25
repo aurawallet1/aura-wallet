@@ -356,7 +356,7 @@
     "mnemonicStretchHeading": "Seed-afledning",
     "mnemonicStretchBlurb": "PBKDF2-HMAC-SHA512 kørt over 2.048 iterationer — præcis, hvad BIP-39-standarden kræver.",
     "localKeyAssuranceHeading": "Dine nøgler bliver altid på din telefon",
-    "localKeyAssuranceBlurb": "Aura kigger på blockchainen gennem offentlige Electrum-servere efter dit eget valg — ingen konti, ingen Aura-servere, ingen analyse.",
+    "localKeyAssuranceBlurb": "Aura kigger på blockchainen gennem offentlige Electrum-servere efter dit eget valg — ingen konti, ingen analyse.",
     "transparentCodeHeading": "Aura er open source.",
     "auditableRepoBlurb": "Hele Auras kode ligger i ét enkelt offentligt repository. Læs den, auditér den, og bekræft selv præcis, hvad din wallet gør — hvordan nøgler bliver til, hvordan dit seed afledes, og at Aura aldrig kan få øje på dine midler.",
     "browseRepoAction": "Se på GitHub"

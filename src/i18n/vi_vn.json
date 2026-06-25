@@ -356,7 +356,7 @@
     "mnemonicStretchHeading": "Dẫn xuất seed",
     "mnemonicStretchBlurb": "PBKDF2-HMAC-SHA512 chạy qua 2.048 vòng lặp — chính xác như tiêu chuẩn BIP-39 yêu cầu.",
     "localKeyAssuranceHeading": "Các khóa của bạn luôn nằm trên điện thoại của bạn",
-    "localKeyAssuranceBlurb": "Aura xem blockchain thông qua các máy chủ Electrum công khai do bạn lựa chọn — không tài khoản, không máy chủ Aura, không phân tích.",
+    "localKeyAssuranceBlurb": "Aura xem blockchain thông qua các máy chủ Electrum công khai do bạn lựa chọn — không tài khoản, không phân tích.",
     "transparentCodeHeading": "Aura là mã nguồn mở.",
     "auditableRepoBlurb": "Toàn bộ mã của Aura nằm trong một kho lưu trữ công khai duy nhất. Hãy đọc nó, kiểm toán nó, và tự mình xác nhận chính xác ví của bạn làm gì — các khóa được tạo ra như thế nào, seed của bạn được dẫn xuất ra sao, và rằng Aura không bao giờ có thể nhìn thấy số tiền của bạn.",
     "browseRepoAction": "Xem trên GitHub"

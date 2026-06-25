@@ -356,7 +356,7 @@
     "mnemonicStretchHeading": "Деривација seed-а",
     "mnemonicStretchBlurb": "PBKDF2-HMAC-SHA512 покренут кроз 2.048 итерација — управо онако како захтева стандард BIP-39.",
     "localKeyAssuranceHeading": "Ваши кључеви увек остају на вашем телефону",
-    "localKeyAssuranceBlurb": "Aura гледа blockchain преко јавних Electrum сервера по вашем избору — без налога, без Aura сервера, без аналитике.",
+    "localKeyAssuranceBlurb": "Aura гледа blockchain преко јавних Electrum сервера по вашем избору — без налога, без аналитике.",
     "transparentCodeHeading": "Aura је отвореног кода.",
     "auditableRepoBlurb": "Сав код апликације Aura налази се у јединственом јавном репозиторијуму. Прочитајте га, проверите и уверите се сами тачно шта ваш новчаник ради — како кључеви настају, како се изводи ваш seed и да Aura никада не може видети ваша средства.",
     "browseRepoAction": "Прикажи на GitHub-у"

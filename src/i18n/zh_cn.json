@@ -356,7 +356,7 @@
     "mnemonicStretchHeading": "种子派生",
     "mnemonicStretchBlurb": "PBKDF2-HMAC-SHA512 运行 2,048 次迭代——这正是 BIP-39 标准所要求的。",
     "localKeyAssuranceHeading": "你的密钥始终留在你的手机上",
-    "localKeyAssuranceBlurb": "Aura 通过你自行选择的公共 Electrum 服务器读取区块链——没有账户，没有 Aura 服务器，没有数据分析。",
+    "localKeyAssuranceBlurb": "Aura 通过你自行选择的公共 Electrum 服务器读取区块链——没有账户，没有数据分析。",
     "transparentCodeHeading": "Aura 是开源的。",
     "auditableRepoBlurb": "Aura 的所有代码都存放在同一个公开仓库中。阅读它、审计它，亲自验证你的钱包究竟在做什么——密钥如何生成、种子如何派生，以及 Aura 永远无法看到你的资金。",
     "browseRepoAction": "在 GitHub 上查看"

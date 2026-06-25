@@ -356,7 +356,7 @@
     "mnemonicStretchHeading": "اشتقاق البذرة",
     "mnemonicStretchBlurb": "تُنفَّذ PBKDF2-HMAC-SHA512 على 2,048 تكراراً — تماماً كما يقتضي معيار BIP-39.",
     "localKeyAssuranceHeading": "تبقى مفاتيحك على هاتفك دائماً",
-    "localKeyAssuranceBlurb": "يطّلع Aura على البلوكتشين عبر خوادم Electrum العامة التي تختارها — بلا حسابات، ولا خوادم Aura، ولا تحليلات.",
+    "localKeyAssuranceBlurb": "يطّلع Aura على البلوكتشين عبر خوادم Electrum العامة التي تختارها — بلا حسابات، ولا تحليلات.",
     "transparentCodeHeading": "Aura مفتوح المصدر.",
     "auditableRepoBlurb": "يوجد كل كود Aura في مستودع عام واحد. اقرأه، ودقّقه، وتأكد بنفسك مما تفعله محفظتك بالضبط — كيف تُولَّد المفاتيح، وكيف تُشتق بذرتك، وأن Aura لا يمكنه أبداً رؤية أموالك.",
     "browseRepoAction": "عرض على GitHub"

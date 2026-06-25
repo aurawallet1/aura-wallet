@@ -356,7 +356,7 @@
     "mnemonicStretchHeading": "การสร้าง Seed (Derivation)",
     "mnemonicStretchBlurb": "PBKDF2-HMAC-SHA512 ทำงาน 2,048 รอบ ซึ่งตรงตามที่มาตรฐาน BIP-39 กำหนดไว้ทุกประการ",
     "localKeyAssuranceHeading": "คีย์ของคุณอยู่บนโทรศัพท์ของคุณเสมอ",
-    "localKeyAssuranceBlurb": "Aura ดูบล็อกเชนผ่านเซิร์ฟเวอร์ Electrum สาธารณะที่คุณเลือก ไม่มีบัญชี ไม่มีเซิร์ฟเวอร์ของ Aura ไม่มีการวิเคราะห์ข้อมูล",
+    "localKeyAssuranceBlurb": "Aura ดูบล็อกเชนผ่านเซิร์ฟเวอร์ Electrum สาธารณะที่คุณเลือก ไม่มีบัญชี ไม่มีการวิเคราะห์ข้อมูล",
     "transparentCodeHeading": "Aura เป็นโอเพนซอร์ส",
     "auditableRepoBlurb": "โค้ดทั้งหมดของ Aura อยู่ในที่เก็บโค้ดสาธารณะแห่งเดียว อ่านมัน ตรวจสอบมัน และยืนยันด้วยตัวคุณเองว่ากระเป๋าเงินของคุณทำงานอย่างไรจริง ๆ ทั้งวิธีการสร้างคีย์ วิธีการสร้าง seed ของคุณ และยืนยันว่า Aura ไม่มีทางมองเห็นเงินของคุณได้เลย",
     "browseRepoAction": "ดูบน GitHub"
