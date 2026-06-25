@@ -358,7 +358,7 @@
     "mnemonicStretchHeading": "Seed Derivation",
     "mnemonicStretchBlurb": "PBKDF2-HMAC-SHA512 run over 2,048 iterations — precisely what the BIP-39 standard calls for.",
     "localKeyAssuranceHeading": "Your keys stay on your phone, always",
-    "localKeyAssuranceBlurb": "Aura looks at the blockchain through public Electrum servers of your choosing — no accounts, no Aura servers, no analytics.",
+    "localKeyAssuranceBlurb": "Aura looks at the blockchain through public Electrum servers of your choosing — no accounts, no analytics. The one Aura server it ever contacts is the optional notifications relay, and only while you have alerts switched on.",
     "transparentCodeHeading": "Aura is open source.",
     "auditableRepoBlurb": "All of Aura's code sits in a single public repository. Read it, audit it, and confirm for yourself exactly what your wallet does — how keys come to be, how your seed is derived, and that Aura can never lay eyes on your funds.",
     "browseRepoAction": "View on GitHub"
@@ -390,7 +390,10 @@
     "sendSamplePing": "Fire off a test notification",
     "sampleReachableHint": "Confirm that alerts make it to this device.",
     "sampleBlockedHint": "Switch on notifications to run a test.",
-    "devicePermissionsHint": "Handle notification permissions over in iOS."
+    "devicePermissionsHint": "Handle notification permissions over in iOS.",
+    "relayErrorTitle": "Notifications",
+    "relayUnreachable": "Couldn't reach the notification server. Check the address and your connection, then try again.",
+    "pushUnavailable": "This build can't get a push token yet. Push has to be set up in the native build — APNs on iOS, FCM on Android."
   },
   "aboutApp": {
     "communityProjectStatement": "Aura is a free, open-source project. Made by people who use Bitcoin.",

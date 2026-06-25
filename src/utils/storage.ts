@@ -36,6 +36,7 @@ export const StorageKeys = {
   transactionCache: key('transactionCache'),
   haptics: key('haptics'),
   notifications: key('notifications'),
+  notificationsToken: key('notificationsToken'),
   analyticsDisabled: key('analyticsDisabled'),
   mempoolFallback: key('mempoolFallback'),
   language: key('language'),
@@ -123,6 +124,19 @@ export async function getNotificationsEnabled(): Promise<boolean> {
 
 export async function setNotificationsEnabled(enabled: boolean): Promise<void> {
   await persistBool(StorageKeys.notifications, enabled);
+}
+
+export async function getNotificationsToken(): Promise<string | null> {
+  const raw = await loadString(StorageKeys.notificationsToken);
+  return raw && raw.trim() ? raw.trim() : null;
+}
+
+export async function setNotificationsToken(token: string): Promise<void> {
+  await persistString(StorageKeys.notificationsToken, token);
+}
+
+export async function clearNotificationsToken(): Promise<void> {
+  await removeKey(StorageKeys.notificationsToken);
 }
 
 export async function getAnalyticsDisabled(): Promise<boolean> {

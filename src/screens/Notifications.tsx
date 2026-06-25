@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
+  Alert,
   Keyboard,
   LayoutAnimation,
   Linking,
@@ -25,11 +26,21 @@ import { triggerHaptic, triggerSuccessHaptic } from '../utils/haptics';
 import {
   getNotificationsEnabled,
   setNotificationsEnabled,
+  getNotificationsToken,
+  setNotificationsToken,
   loadBool,
   persistBool,
   loadString,
   persistString,
 } from '../utils/storage';
+import type { AlertEvents, SubscriptionPayload } from '../network/alerts';
+import {
+  registerSubscription,
+  sendTestPing,
+  purgeSubscription,
+} from '../network/alerts';
+import { acquireDeviceToken, currentPlatform, PushUnavailableError } from '../notifications/push';
+import { buildSubscriptionWallets } from '../notifications/subscriptions';
 
 type NotificationsNavigation = NativeStackNavigationProp<RootStackParamList, 'Notifications'>;
 
@@ -76,7 +87,7 @@ const NotificationsScreen = (): React.ReactElement => {
   const isDark = useColorScheme() === 'dark';
   const palette = isDark ? COLORS.dark : COLORS.light;
   const navigation = useNavigation<NotificationsNavigation>();
-  const { isRTL } = useWallets();
+  const { isRTL, wallets } = useWallets();
 
   const pageBg = isDark ? palette.bg : palette.cardGray;
   const cellBg = isDark ? palette.cardGray : palette.bg;
@@ -86,10 +97,12 @@ const NotificationsScreen = (): React.ReactElement => {
   const [confirmations, setConfirmations] = useState(false);
   const [advancedOpen, setAdvancedOpen] = useState(false);
   const [testSent, setTestSent] = useState(false);
+  const [working, setWorking] = useState(false);
   const [relay, setRelay] = useState(DEFAULT_RELAY);
 
   const committedRelay = useRef(DEFAULT_RELAY);
   const relayInputRef = useRef<TextInput>(null);
+  const tokenRef = useRef<string | null>(null);
 
   useEffect(() => {
     let active = true;
@@ -121,6 +134,11 @@ const NotificationsScreen = (): React.ReactElement => {
         committedRelay.current = resolved;
       }
     });
+    getNotificationsToken().then(stored => {
+      if (active) {
+        tokenRef.current = stored;
+      }
+    });
     return () => {
       active = false;
     };
@@ -147,24 +165,89 @@ const NotificationsScreen = (): React.ReactElement => {
   const switchMirror = { transform: [{ scaleX: isRTL ? -1 : 1 }] };
   const iconMirror = { transform: [{ scaleX: isRTL ? -1 : 1 }] };
 
-  const onToggleMaster = useCallback((value: boolean) => {
-    LayoutAnimation.configureNext(REVEAL_ANIMATION);
-    setEnabled(value);
-    setNotificationsEnabled(value).catch(() => {});
-    triggerSuccessHaptic();
-  }, []);
+  const describeError = useCallback(
+    (error: unknown): string =>
+      error instanceof PushUnavailableError ? loc.alerts.pushUnavailable : loc.alerts.relayUnreachable,
+    [],
+  );
 
-  const onToggleIncoming = useCallback((value: boolean) => {
-    setIncoming(value);
-    persistBool(INCOMING_KEY, value).catch(() => {});
-    triggerHaptic();
-  }, []);
+  const buildPayload = useCallback(
+    (token: string, events: AlertEvents): SubscriptionPayload => ({
+      deviceToken: token,
+      platform: currentPlatform(),
+      events,
+      wallets: buildSubscriptionWallets(wallets),
+    }),
+    [wallets],
+  );
 
-  const onToggleConfirmations = useCallback((value: boolean) => {
-    setConfirmations(value);
-    persistBool(CONFIRMATIONS_KEY, value).catch(() => {});
-    triggerHaptic();
-  }, []);
+  const reRegister = useCallback(
+    (events: AlertEvents) => {
+      const token = tokenRef.current;
+      if (!token) {
+        return;
+      }
+      registerSubscription(committedRelay.current, buildPayload(token, events)).catch(() => {});
+    },
+    [buildPayload],
+  );
+
+  const onToggleMaster = useCallback(
+    (value: boolean) => {
+      LayoutAnimation.configureNext(REVEAL_ANIMATION);
+      triggerSuccessHaptic();
+      if (!value) {
+        setEnabled(false);
+        setNotificationsEnabled(false).catch(() => {});
+        const token = tokenRef.current;
+        if (token) {
+          purgeSubscription(committedRelay.current, token).catch(() => {});
+        }
+        return;
+      }
+      setEnabled(true);
+      setWorking(true);
+      (async () => {
+        try {
+          const token = tokenRef.current ?? (await acquireDeviceToken());
+          tokenRef.current = token;
+          await setNotificationsToken(token);
+          await registerSubscription(
+            committedRelay.current,
+            buildPayload(token, { incoming, confirmations }),
+          );
+          await setNotificationsEnabled(true);
+        } catch (error) {
+          setEnabled(false);
+          setNotificationsEnabled(false).catch(() => {});
+          Alert.alert(loc.alerts.relayErrorTitle, describeError(error));
+        } finally {
+          setWorking(false);
+        }
+      })();
+    },
+    [incoming, confirmations, buildPayload, describeError],
+  );
+
+  const onToggleIncoming = useCallback(
+    (value: boolean) => {
+      setIncoming(value);
+      persistBool(INCOMING_KEY, value).catch(() => {});
+      triggerHaptic();
+      reRegister({ incoming: value, confirmations });
+    },
+    [confirmations, reRegister],
+  );
+
+  const onToggleConfirmations = useCallback(
+    (value: boolean) => {
+      setConfirmations(value);
+      persistBool(CONFIRMATIONS_KEY, value).catch(() => {});
+      triggerHaptic();
+      reRegister({ incoming, confirmations: value });
+    },
+    [incoming, reRegister],
+  );
 
   const openSystemSettings = useCallback(() => {
     Linking.openSettings().catch(() => {});
@@ -176,9 +259,20 @@ const NotificationsScreen = (): React.ReactElement => {
   }, []);
 
   const runTest = useCallback(() => {
-    setTestSent(true);
+    const token = tokenRef.current;
+    if (!token) {
+      Alert.alert(loc.alerts.relayErrorTitle, loc.alerts.pushUnavailable);
+      return;
+    }
     triggerSuccessHaptic();
-    setTimeout(() => setTestSent(false), TEST_REVERT_MS);
+    sendTestPing(committedRelay.current, token, currentPlatform())
+      .then(() => {
+        setTestSent(true);
+        setTimeout(() => setTestSent(false), TEST_REVERT_MS);
+      })
+      .catch(() => {
+        Alert.alert(loc.alerts.relayErrorTitle, loc.alerts.relayUnreachable);
+      });
   }, []);
 
   const commitRelay = useCallback(() => {
@@ -191,14 +285,20 @@ const NotificationsScreen = (): React.ReactElement => {
     committedRelay.current = candidate;
     persistString(RELAY_KEY, candidate).catch(() => {});
     triggerSuccessHaptic();
-  }, [relay]);
+    if (enabled) {
+      reRegister({ incoming, confirmations });
+    }
+  }, [relay, enabled, incoming, confirmations, reRegister]);
 
   const resetRelay = useCallback(() => {
     setRelay(DEFAULT_RELAY);
     committedRelay.current = DEFAULT_RELAY;
     persistString(RELAY_KEY, DEFAULT_RELAY).catch(() => {});
     triggerSuccessHaptic();
-  }, []);
+    if (enabled) {
+      reRegister({ incoming, confirmations });
+    }
+  }, [enabled, incoming, confirmations, reRegister]);
 
   return (
     <ScrollView
@@ -217,7 +317,7 @@ const NotificationsScreen = (): React.ReactElement => {
               {loc.alerts.tagline}
             </Text>
           </View>
-          {enabled === undefined ? (
+          {enabled === undefined || working ? (
             <ActivityIndicator style={styles.control} />
           ) : (
             <Switch

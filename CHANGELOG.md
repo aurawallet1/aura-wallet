@@ -5,6 +5,14 @@ All notable changes to Aura Wallet are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [11.80.2] - 2026-06-25
+
+### Added
+- Notifications now actually talk to the relay. Turning alerts on registers this device's push token and your wallets' watch-only addresses with the notifications relay (default `alerts.aura.app`), the test button sends a real ping, and turning alerts off purges this device from the relay. iOS uses APNs via `@react-native-community/push-notification-ios`; Android needs FCM configured in the native build.
+
+### Fixed
+- Privacy disclosure no longer claims "no Aura servers" outright — it now states that the optional notifications relay is the one Aura server the app contacts, and only while alerts are switched on. Resolves the contradiction with the alerts relay endpoint.
+
 ## [1.3.7] - 2026-06-25
 
 ### Fixed
@@ -92,6 +100,7 @@ First public release.
 - Fully internationalized UI in 40 languages.
 - Crypto-core test suite verified against official Bitcoin (BIP) test vectors.
 
+[11.80.2]: https://github.com/aurawallet1/aura-wallet/releases/tag/v11.80.2
 [1.3.7]: https://github.com/aurawallet1/aura-wallet/releases/tag/v1.3.7
 [1.3.6]: https://github.com/aurawallet1/aura-wallet/releases/tag/v1.3.6
 [1.3.5]: https://github.com/aurawallet1/aura-wallet/releases/tag/v1.3.5
