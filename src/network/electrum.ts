@@ -1,7 +1,14 @@
 import TcpSocket from "react-native-tcp-socket";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { sha256 } from "@noble/hashes/sha2.js";
 import { hex, bech32, bech32m, base58check } from "@scure/base";
 import { hash160, compressedPublicKey } from "../wallets/derivation";
+import {
+  ELECTRUM_CONFIG_KEY,
+  DEFAULT_SERVERS,
+  serversFromConfig,
+} from "./electrumConfig";
+import type { ElectrumServer } from "./electrumConfig";
 import type {
   HistoryInput,
   HistoryOutput,
@@ -40,17 +47,20 @@ const IDLE_TIMEOUT_MS = 60000;
 // Cap the receive buffer so a malicious server can't stream unbounded data and exhaust memory.
 const MAX_BUFFER_CHARS = 16 * 1024 * 1024;
 
-export interface ElectrumServer {
-  host: string;
-  port: number;
-}
+export type { ElectrumServer } from "./electrumConfig";
+export { DEFAULT_SERVERS } from "./electrumConfig";
 
-export const DEFAULT_SERVERS: readonly ElectrumServer[] = [
-  { host: "electrum.blockstream.info", port: 50002 },
-  { host: "fulcrum.sethforprivacy.com", port: 50002 },
-  { host: "bitcoin.aranguren.org", port: 50002 },
-  { host: "electrum.bitaroo.net", port: 50002 },
-];
+/**
+ * Read the saved node-connection config and resolve the servers to dial — the
+ * user's own node when configured, otherwise the public defaults.
+ */
+export const resolveElectrumServers = async (): Promise<readonly ElectrumServer[]> => {
+  try {
+    return serversFromConfig(await AsyncStorage.getItem(ELECTRUM_CONFIG_KEY));
+  } catch {
+    return DEFAULT_SERVERS;
+  }
+};
 
 export type ScriptKind = "P2PKH" | "P2SH-P2WPKH" | "P2WPKH";
 
@@ -137,7 +147,7 @@ interface PendingCall {
   timer: ReturnType<typeof setTimeout>;
 }
 
-type Socket = ReturnType<typeof TcpSocket.connectTLS>;
+type Socket = ReturnType<typeof TcpSocket.connect>;
 
 const PRIVATE_KEY_HINT =
   /\b(mnemonic|seed|passphrase|xpriv|xprv|wif|privkey|private[_-]?key)\b/i;
@@ -1259,20 +1269,26 @@ export class ElectrumClient {
         reject(new Error(`connection to ${server.host} timed out`));
       }, CONNECT_TIMEOUT_MS);
 
-      const socket = TcpSocket.connectTLS(
-        {
-          host: server.host,
-          port: server.port,
-          tls: true,
-          tlsCheckValidity: true,
-        },
-        () => {
-          if (settled) return;
-          settled = true;
-          clearTimeout(timer);
-          resolve();
-        },
-      );
+      const onConnect = () => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        resolve();
+      };
+      // A non-SSL server (local / .onion node) uses a plain TCP socket; the public
+      // defaults and SSL servers keep the validated TLS connection.
+      const socket =
+        server.ssl === false
+          ? TcpSocket.connect({ host: server.host, port: server.port }, onConnect)
+          : TcpSocket.connectTLS(
+              {
+                host: server.host,
+                port: server.port,
+                tls: true,
+                tlsCheckValidity: true,
+              },
+              onConnect,
+            );
 
       this.socket = socket;
       this.buffer = "";

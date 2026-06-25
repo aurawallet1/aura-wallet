@@ -1,5 +1,5 @@
 import type { HistoryResult } from '../types/index';
-import { ElectrumClient, createElectrumClient } from './electrum';
+import { ElectrumClient, createElectrumClient, resolveElectrumServers } from './electrum';
 import { fetchHistory as fetchHistoryMempool } from './mempool';
 
 let shared: ElectrumClient | null = null;
@@ -17,7 +17,7 @@ const getClient = async (): Promise<ElectrumClient> => {
     }
   }
   if (!connecting) {
-    const client = createElectrumClient();
+    const client = createElectrumClient(await resolveElectrumServers());
     connecting = client
       .connect()
       .then(() => {

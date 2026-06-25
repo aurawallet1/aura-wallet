@@ -18,6 +18,7 @@ import {
 } from '../network/mempool';
 import {
   createElectrumClient,
+  resolveElectrumServers,
   scriptHashFromPublicKey,
   type ElectrumClient,
   type ScriptKind,
@@ -357,7 +358,7 @@ interface MnemonicScanData {
 }
 
 async function runMnemonicElectrum(seed: Uint8Array): Promise<MnemonicScanData> {
-  const client = createElectrumClient();
+  const client = createElectrumClient(await resolveElectrumServers());
   try {
     await client.connect();
     const results: SchemeScan[] = [];
@@ -466,7 +467,7 @@ interface WifScanData {
 }
 
 async function runWifElectrum(privateKey: Uint8Array, wif: string): Promise<WifScanData> {
-  const client = createElectrumClient();
+  const client = createElectrumClient(await resolveElectrumServers());
   try {
     await client.connect();
     const publicKey = compressedPublicKey(privateKey);
