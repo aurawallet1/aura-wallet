@@ -57,7 +57,7 @@
     "@react-native/metro-config": "0.85.3",
     "@react-native/typescript-config": "0.85.3",
     "@scure/bip32": "^1.7.0",
-    "@scure/btc-signer": "^1.8.1",
+    "@scure/btc-signer": "^2.2.0",
     "@types/jest": "^29.5.13",
     "@types/react": "^19.2.0",
     "@types/react-test-renderer": "^19.1.0",
