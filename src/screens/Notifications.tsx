@@ -38,6 +38,7 @@ import {
   registerSubscription,
   sendTestPing,
   purgeSubscription,
+  isAcceptableRelay,
 } from '../network/alerts';
 import { acquireDeviceToken, currentPlatform, PushUnavailableError } from '../notifications/push';
 import { buildSubscriptionWallets } from '../notifications/subscriptions';
@@ -62,20 +63,6 @@ const REVEAL_ANIMATION = {
 const directionalText = (rtl: boolean): { writingDirection: 'rtl' | 'ltr' } => ({
   writingDirection: rtl ? 'rtl' : 'ltr',
 });
-
-const isAcceptableRelay = (value: string): boolean => {
-  const trimmed = value.trim();
-  if (trimmed.length === 0) {
-    return false;
-  }
-  const withScheme = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
-  try {
-    const parsed = new URL(withScheme);
-    return parsed.hostname.includes('.') && parsed.hostname.length > 3;
-  } catch {
-    return false;
-  }
-};
 
 const privacyLines = (): string[] => [
   loc.alerts.relayTokenDisclosure,

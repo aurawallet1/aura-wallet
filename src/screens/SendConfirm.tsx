@@ -238,7 +238,12 @@ const SendConfirmScreen: React.FC = () => {
         const noChangeFee = Math.max(1, Math.round(rate * estimateVBytes(coins, 1)));
         const trimmed = inputTotal - noChangeFee;
         if (trimmed < DUST_FLOOR_SATS) return null;
-        outputs[0] = { address, value: Math.min(requestedSats, trimmed) };
+        const sendValue = Math.min(requestedSats, trimmed);
+        // Without a change output any non-dust remainder would be paid to miners.
+        // Refuse to build such a transaction (e.g. no valid change address) rather
+        // than silently burning the leftover to fees.
+        if (trimmed - sendValue >= DUST_FLOOR_SATS) return null;
+        outputs[0] = { address, value: sendValue };
       }
       return { inputs, outputs };
     },
@@ -250,6 +255,13 @@ const SendConfirmScreen: React.FC = () => {
       const change = freshChangeAddress(entry, changeAddressType);
       const plan = composeOutputs(spendableCoins, rate, change);
       if (!plan) return null;
+      // Defense-in-depth: never broadcast a tx whose real fee exceeds the quote by
+      // more than dust — guards against any miscomputed/burned remainder.
+      const inTotal = plan.inputs.reduce((sum, item) => sum + item.value, 0);
+      const outTotal = plan.outputs.reduce((sum, item) => sum + item.value, 0);
+      const actualFee = inTotal - outTotal;
+      const quotedFee = Math.max(1, Math.round(rate * estimateVBytes(spendableCoins, plan.outputs.length)));
+      if (actualFee < 0 || actualFee > quotedFee + DUST_FLOOR_SATS) return null;
       const signed = buildSignedTransaction(plan.inputs, plan.outputs);
       return { hex: signed.hex, txid: signed.txid, vsize: signed.vsize };
     },

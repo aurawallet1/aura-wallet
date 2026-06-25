@@ -298,6 +298,12 @@ export const SendAmountScreen = (): React.ReactElement => {
         return;
       }
     }
+    // Only the first recipient is carried into the confirm/sign path; block multi
+    // so additional recipients can't be silently dropped from the transaction.
+    if (recipients.length > 1) {
+      Alert.alert(loc.appGeneral.notYetAvailable);
+      return;
+    }
     recipients.forEach(recipient => {
       const trimmed = recipient.address.trim();
       if (trimmed) saveAddress(trimmed);

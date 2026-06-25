@@ -86,3 +86,39 @@ export async function purgeSubscription(relay: string, deviceToken: string): Pro
     method: 'DELETE',
   });
 }
+
+const PRIVATE_HOST =
+  /^(localhost|0\.0\.0\.0|127\.|10\.|192\.168\.|169\.254\.|172\.(1[6-9]|2\d|3[01])\.)/i;
+
+/**
+ * Validate a user-entered relay endpoint before the device push token and wallet
+ * address list are sent to it. Requires HTTPS and rejects cleartext, loopback,
+ * link-local and RFC1918 hosts so the data can't be exfiltrated to an internal
+ * or attacker-controlled endpoint.
+ */
+export const isAcceptableRelay = (value: string): boolean => {
+  const trimmed = (value ?? '').trim();
+  if (!trimmed) {
+    return false;
+  }
+  if (/^http:\/\//i.test(trimmed)) {
+    return false;
+  }
+  const withScheme = /^https:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+  try {
+    const url = new URL(withScheme);
+    if (url.protocol !== 'https:') {
+      return false;
+    }
+    const host = url.hostname.toLowerCase();
+    if (host.includes(':') || !host.includes('.') || host.length <= 3) {
+      return false;
+    }
+    if (host.endsWith('.local') || PRIVATE_HOST.test(host)) {
+      return false;
+    }
+    return true;
+  } catch {
+    return false;
+  }
+};

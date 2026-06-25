@@ -50,7 +50,7 @@ export const parsePaymentUri = (raw: string): ParsedPayment => {
   if (queryIndex >= 0) {
     const params = parseQuery(withoutScheme.slice(queryIndex + 1));
     const amount = params.amount;
-    if (amount && /^\d*\.?\d+$/.test(amount) && Number(amount) > 0) {
+    if (amount && amount.length <= 32 && /^(\d+(\.\d+)?|\.\d+)$/.test(amount) && Number(amount) > 0) {
       result.amountBtc = amount;
     }
     const label = params.label || params.message;

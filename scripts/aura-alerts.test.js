@@ -88,6 +88,17 @@ function mockFetch(status) {
 
   ok('empty relay endpoint rejects', await threwAsync(() => alerts.registerSubscription('   ', PAYLOAD)));
 
+  // isAcceptableRelay hardening
+  ok('relay: https public host accepted', alerts.isAcceptableRelay('https://alerts.aura.app') === true);
+  ok('relay: bare host assumed https accepted', alerts.isAcceptableRelay('alerts.aura.app') === true);
+  ok('relay: cleartext http rejected', alerts.isAcceptableRelay('http://alerts.aura.app') === false);
+  ok('relay: metadata/link-local IP rejected', alerts.isAcceptableRelay('https://169.254.169.254') === false);
+  ok('relay: RFC1918 host rejected', alerts.isAcceptableRelay('https://192.168.1.5') === false);
+  ok('relay: loopback rejected', alerts.isAcceptableRelay('https://127.0.0.1') === false);
+  ok('relay: localhost rejected', alerts.isAcceptableRelay('https://localhost') === false);
+  ok('relay: .local mDNS rejected', alerts.isAcceptableRelay('https://mynode.local') === false);
+  ok('relay: empty rejected', alerts.isAcceptableRelay('') === false);
+
   console.log(`${pass} passed, ${fail} failed (of ${pass + fail}).`);
   fs.rmSync(outDir, { recursive: true, force: true });
   process.exit(fail ? 1 : 0);

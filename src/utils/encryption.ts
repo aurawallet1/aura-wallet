@@ -26,6 +26,7 @@ const HKDF_INFO = 'aura/holding/hkdf/v2';
 const KDF_ARGON2 = 'argon2id';
 const KDF_HKDF = 'hkdf-sha256';
 const LEGACY_PBKDF2_ROUNDS = 200000;
+const LEGACY_PBKDF2_ROUNDS_MAX = 1000000;
 const MAX_PAYLOAD_BYTES = 0x7fffffff;
 const TAG_PATTERN = /^[a-z]{2,16}$/;
 
@@ -245,7 +246,13 @@ export function sealWithKey(plaintext: string, keyHex: string): string {
 const deriveForEnvelope = (envelope: StorageEnvelope, secret: string): DerivedKeys => {
   const saltWords = fromBase64(envelope.salt);
   if (envelope.version === LEGACY_VERSION) {
-    return deriveLegacyPbkdf2(secret, saltWords, envelope.rounds ?? LEGACY_PBKDF2_ROUNDS);
+    // Clamp the stored iteration count so a tampered envelope can't pin a huge
+    // value and hang the app (no real envelope ever exceeds the default).
+    const rounds = Math.min(
+      LEGACY_PBKDF2_ROUNDS_MAX,
+      Math.max(1, envelope.rounds ?? LEGACY_PBKDF2_ROUNDS),
+    );
+    return deriveLegacyPbkdf2(secret, saltWords, rounds);
   }
   const saltBytes = wordArrayToBytes(saltWords);
   if (envelope.kdf === KDF_HKDF) {
