@@ -294,25 +294,28 @@ export const buildSignedTransaction = (
   const scriptSigs: Uint8Array[] = new Array(prepared.length);
   const witnesses: Uint8Array[] = new Array(prepared.length);
 
-  for (let i = 0; i < prepared.length; i += 1) {
-    const item = prepared[i];
-    const type = item.input.scriptType;
+  try {
+    for (let i = 0; i < prepared.length; i += 1) {
+      const item = prepared[i];
+      const type = item.input.scriptType;
 
-    if (type === 'P2PKH') {
-      const hash = legacySighash(prepared, outputs, i, locktime, TX_VERSION);
-      const signature = signHash(hash, item.privateKey);
-      scriptSigs[i] = varBytes(concatBytes(varBytes(signature), varBytes(item.publicKey)));
-      witnesses[i] = varint(0);
-    } else {
-      const hash = segwitSighash(prepared, outputs, i, locktime, TX_VERSION);
-      const signature = signHash(hash, item.privateKey);
-      scriptSigs[i] = finalScriptSigForSegwit(item);
-      witnesses[i] = concatBytes(varint(2), varBytes(signature), varBytes(item.publicKey));
+      if (type === 'P2PKH') {
+        const hash = legacySighash(prepared, outputs, i, locktime, TX_VERSION);
+        const signature = signHash(hash, item.privateKey);
+        scriptSigs[i] = varBytes(concatBytes(varBytes(signature), varBytes(item.publicKey)));
+        witnesses[i] = varint(0);
+      } else {
+        const hash = segwitSighash(prepared, outputs, i, locktime, TX_VERSION);
+        const signature = signHash(hash, item.privateKey);
+        scriptSigs[i] = finalScriptSigForSegwit(item);
+        witnesses[i] = concatBytes(varint(2), varBytes(signature), varBytes(item.publicKey));
+      }
     }
-  }
-
-  for (const item of prepared) {
-    item.privateKey.fill(0);
+  } finally {
+    // Wipe key material even if a bad destination address makes serialization throw.
+    for (const item of prepared) {
+      item.privateKey.fill(0);
+    }
   }
 
   const serializedOutputs = serializeOutputs(outputs);
@@ -377,12 +380,16 @@ export const sighashForInput = (
   }
   const prepared = inputs.map(prepareInput);
   const target = prepared[index];
-  const hash =
-    target.input.scriptType === 'P2PKH'
-      ? legacySighash(prepared, outputs, index, locktime, version)
-      : segwitSighash(prepared, outputs, index, locktime, version);
-  for (const item of prepared) {
-    item.privateKey.fill(0);
+  let hash: Uint8Array;
+  try {
+    hash =
+      target.input.scriptType === 'P2PKH'
+        ? legacySighash(prepared, outputs, index, locktime, version)
+        : segwitSighash(prepared, outputs, index, locktime, version);
+  } finally {
+    for (const item of prepared) {
+      item.privateKey.fill(0);
+    }
   }
   return bytesToHex(hash);
 };

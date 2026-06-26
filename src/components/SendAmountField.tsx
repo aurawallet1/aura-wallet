@@ -10,7 +10,7 @@ const SATS_PER_BTC = 100_000_000;
 
 const reverseRoundTrip: Record<string, string> = {};
 
-const fiatCacheKey = (value: string): string => `${value}fiat`;
+const fiatCacheKey = (value: string, rate: number | null): string => `${value}|${rate ?? 0}|fiat`;
 
 const trimBtc = (sats: number): string => {
   const btc = sats / SATS_PER_BTC;
@@ -49,7 +49,7 @@ const cleanInput = (raw: string, unit: SendUnit): string => {
 
 export const amountToSats = (amount: string, unit: SendUnit, rate: number | null): number => {
   if (unit === 'fiat') {
-    const pinned = reverseRoundTrip[fiatCacheKey(amount)];
+    const pinned = reverseRoundTrip[fiatCacheKey(amount, rate)];
     if (pinned != null) return Number(pinned);
   }
   const parsed = parseFloat(amount);
@@ -107,7 +107,7 @@ const SendAmountField: React.FC<SendAmountFieldProps> = ({
       converted = rate ? fiatPlain(baseSats, rate) : '0';
     }
     if (target === 'fiat' && rate) {
-      reverseRoundTrip[fiatCacheKey(converted)] = String(baseSats);
+      reverseRoundTrip[fiatCacheKey(converted, rate)] = String(baseSats);
     }
     onChangeAmount(converted);
     setUnit(target);

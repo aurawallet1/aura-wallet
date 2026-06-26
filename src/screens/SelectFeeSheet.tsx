@@ -118,8 +118,9 @@ export const SelectFeeSheetScreen = (): React.ReactElement => {
 
   const onCustomSubmit = (): void => {
     const parsed = parseCustomFee(customValue);
-    if (parsed > 0) {
-      choose(parsed);
+    // Reject non-finite, non-positive, or absurd fee rates; use whole sat/vB.
+    if (Number.isFinite(parsed) && parsed > 0 && parsed <= 5000) {
+      choose(Math.round(parsed));
     }
   };
 

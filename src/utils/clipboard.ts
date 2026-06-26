@@ -1,4 +1,4 @@
-import { Clipboard } from 'react-native';
+import { AppState, Clipboard } from 'react-native';
 
 // How long a copied secret is allowed to linger on the shared system
 // clipboard before we wipe it. Long enough to paste into another field,
@@ -20,7 +20,14 @@ export function copyEphemeralSecret(
   ttlMs: number = SECRET_CLIPBOARD_TTL_MS,
 ): void {
   Clipboard.setString(value);
-  setTimeout(() => {
+  let done = false;
+  const wipe = (): void => {
+    if (done) {
+      return;
+    }
+    done = true;
+    clearTimeout(timer);
+    subscription.remove();
     Promise.resolve(Clipboard.getString())
       .then(current => {
         if (current === value) {
@@ -30,5 +37,13 @@ export function copyEphemeralSecret(
       .catch(() => {
         // best-effort cleanup; never surface an error from a background timer
       });
-  }, ttlMs);
+  };
+  const timer = setTimeout(wipe, ttlMs);
+  // Also wipe the moment the app leaves the foreground — the timer alone does not
+  // survive backgrounding/termination, which would leave the secret on the clipboard.
+  const subscription = AppState.addEventListener('change', state => {
+    if (state === 'background' || state === 'inactive') {
+      wipe();
+    }
+  });
 }

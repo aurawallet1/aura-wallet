@@ -43,7 +43,6 @@ async function iosToken(): Promise<string> {
   if (!PushNotificationIOS || typeof PushNotificationIOS.requestPermissions !== 'function') {
     throw new PushUnavailableError('ios-push-module-missing');
   }
-  await PushNotificationIOS.requestPermissions();
   return new Promise<string>((resolve, reject) => {
     let settled = false;
     const cleanup = () => {
@@ -77,6 +76,9 @@ async function iosToken(): Promise<string> {
         reject(new PushUnavailableError('ios-registration-error'));
       }
     });
+    // Request permission only after the listeners are attached, so the register
+    // event can't fire before we're listening for it.
+    PushNotificationIOS.requestPermissions().catch(() => {});
   });
 }
 

@@ -34,7 +34,7 @@ type SocialLink = {
 const AURA_LOGO = require('../../img/about-logo.png');
 
 const TELEGRAM_URL = 'https://t.me/aurabitcoinwallet';
-const GITHUB_URL = 'https://github.com';
+const GITHUB_URL = 'https://github.com/aurawallet1/aura-wallet';
 const REVIEW_URL = 'https://apps.apple.com/app/id6749847943?action=write-review';
 
 const buildSocialLinks = (): SocialLink[] => [

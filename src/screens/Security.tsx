@@ -44,7 +44,7 @@ export const SecurityScreen = (): React.ReactElement => {
   const isDark = useColorScheme() === 'dark';
   const palette = isDark ? COLORS.dark : COLORS.light;
   const navigation = useNavigation<SecurityNavigation>();
-  const { wallets, setBioEnabled, setPwdEnabled, isRTL } = useWallets();
+  const { wallets, setBioEnabled, setPwdEnabled, pwdEnabled, isRTL } = useWallets();
 
   const pageBg = isDark ? palette.bg : palette.cardGray;
   const cellBg = isDark ? palette.cardGray : palette.bg;
@@ -52,7 +52,13 @@ export const SecurityScreen = (): React.ReactElement => {
 
   const [biometricType, setBiometricType] = useState<string | undefined>(undefined);
   const [biometricOn, setBiometricOn] = useState(false);
-  const [passwordOn, setPasswordOn] = useState(false);
+  // Reflect the real encryption state so the toggle can't desync (and so a decoy
+  // setup / already-encrypted holding isn't shown as "off").
+  const [passwordOn, setPasswordOn] = useState(pwdEnabled);
+
+  useEffect(() => {
+    setPasswordOn(pwdEnabled);
+  }, [pwdEnabled]);
   const [pending, setPending] = useState<PendingSwitch>(null);
 
   useEffect(() => {

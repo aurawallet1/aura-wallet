@@ -195,7 +195,15 @@ export const SendAmountScreen = (): React.ReactElement => {
 
   const onPasteAddress = useCallback(async () => {
     const text = await Clipboard.getString();
-    if (text) patchRecipient(focusedIndex.current, { address: text.trim(), name: '' });
+    if (text) {
+      const parsed = parsePaymentUri(text);
+      const patch: Partial<Recipient> = { address: parsed.address, name: parsed.label ?? '' };
+      if (parsed.amountBtc) {
+        patch.amount = parsed.amountBtc;
+        patch.unit = 'BTC';
+      }
+      patchRecipient(focusedIndex.current, patch);
+    }
   }, [patchRecipient]);
 
   const onRecipientsScroll = useCallback((event: NativeSyntheticEvent<NativeScrollEvent>) => {

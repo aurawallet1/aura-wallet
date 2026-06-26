@@ -44,6 +44,11 @@ async function relayRequest(relay: string, suffix: string, init: RequestInit): P
   if (!base) {
     throw new Error('missing relay endpoint');
   }
+  // Enforce the policy at the network boundary, not just in the UI — never POST
+  // the push token + addresses to a cleartext or private/internal endpoint.
+  if (!isAcceptableRelay(base)) {
+    throw new Error('relay endpoint rejected');
+  }
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
   try {

@@ -33,7 +33,7 @@ import type { RootStackParamList } from '../navigation/types';
 type DetailNavigation = NativeStackNavigationProp<RootStackParamList, 'TransactionDetail'>;
 type DetailRoute = RouteProp<RootStackParamList, 'TransactionDetail'>;
 
-const MEMO_STORE_KEY = 'walletapp.transactionMemos';
+const MEMO_STORE_KEY = 'walletapp.txNotes';
 
 const formatTimestamp = (unixSeconds: number): string => dayjs.unix(unixSeconds).format('LLL');
 

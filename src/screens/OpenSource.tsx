@@ -27,7 +27,7 @@ type Highlight = {
   detail: string;
 };
 
-const REPOSITORY_URL = 'https://github.com';
+const REPOSITORY_URL = 'https://github.com/aurawallet1/aura-wallet';
 
 const buildHighlights = (): Highlight[] => [
   {

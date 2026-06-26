@@ -1,6 +1,7 @@
 import type { HistoryResult } from '../types/index';
 import { ElectrumClient, createElectrumClient, resolveElectrumServers } from './electrum';
 import { fetchHistory as fetchHistoryMempool } from './mempool';
+import { getMempoolFallback } from '../utils/storage';
 
 let shared: ElectrumClient | null = null;
 let connecting: Promise<ElectrumClient> | null = null;
@@ -59,12 +60,17 @@ export const fetchWalletHistory = async (addresses: string[]): Promise<HistoryRe
   }
   try {
     return await fetchHistoryElectrum(unique);
-  } catch {
+  } catch (error) {
     if (shared) {
       shared.close();
       shared = null;
     }
-    return fetchHistoryMempool(unique);
+    // mempool.space is a third party — only fall back when the user opted in,
+    // otherwise a failed Electrum lookup would leak every address to it.
+    if (await getMempoolFallback()) {
+      return fetchHistoryMempool(unique);
+    }
+    throw error;
   }
 };
 

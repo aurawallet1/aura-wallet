@@ -75,10 +75,22 @@ export const LockScreenScreen: React.FC = () => {
     ).start();
   }, [shakeOffset]);
 
-  const handleReset = useCallback(async () => {
-    await removeKey(StorageKeys.encryptedHolding);
-    await removeKey(StorageKeys.holdingEncrypted);
-    unlock();
+  const handleReset = useCallback(() => {
+    // A failed read of the holding is indistinguishable from "empty" here, so a
+    // transient failure could otherwise wipe a real wallet on a single tap.
+    // Require an explicit, clearly-worded second confirmation before destroying it.
+    Alert.alert(loc.inflow.startOver, loc.prefs.wipeWarningBody, [
+      { text: loc.core.dismissAction, style: 'cancel' },
+      {
+        text: loc.holdings.affirmRemoval,
+        style: 'destructive',
+        onPress: async () => {
+          await removeKey(StorageKeys.encryptedHolding);
+          await removeKey(StorageKeys.holdingEncrypted);
+          unlock();
+        },
+      },
+    ]);
   }, [unlock]);
 
   const submitPassword = useCallback(async () => {

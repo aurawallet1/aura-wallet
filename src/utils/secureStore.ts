@@ -42,8 +42,19 @@ export async function getDeviceKey(requireBiometrics = false): Promise<string | 
 }
 
 export async function ensureDeviceKey(requireBiometrics = false): Promise<string | null> {
-  const existing = await getDeviceKey(requireBiometrics);
-  if (existing) return existing;
+  // Read directly so we can tell "no key yet" (returns false) apart from a
+  // transient read failure (throws). A failed read must NOT be treated as
+  // absent — otherwise we'd overwrite the existing key and permanently lose the
+  // only means of decrypting the stored wallets.
+  let existing: Awaited<ReturnType<typeof Keychain.getGenericPassword>>;
+  try {
+    existing = await Keychain.getGenericPassword(getOptions(requireBiometrics));
+  } catch {
+    return null;
+  }
+  if (existing && existing.password) {
+    return existing.password;
+  }
   try {
     const keyHex = bytesToHex(randomBytes(KEY_BYTES));
     await Keychain.setGenericPassword(ACCOUNT, keyHex, setOptions(requireBiometrics));

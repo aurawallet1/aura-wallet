@@ -268,21 +268,31 @@ const NotificationsScreen = (): React.ReactElement => {
       setRelay(committedRelay.current);
       return;
     }
+    const previous = committedRelay.current;
     setRelay(candidate);
     committedRelay.current = candidate;
     persistString(RELAY_KEY, candidate).catch(() => {});
     triggerSuccessHaptic();
     if (enabled) {
+      const token = tokenRef.current;
+      if (token && previous && previous !== candidate) {
+        purgeSubscription(previous, token).catch(() => {});
+      }
       reRegister({ incoming, confirmations });
     }
   }, [relay, enabled, incoming, confirmations, reRegister]);
 
   const resetRelay = useCallback(() => {
+    const previous = committedRelay.current;
     setRelay(DEFAULT_RELAY);
     committedRelay.current = DEFAULT_RELAY;
     persistString(RELAY_KEY, DEFAULT_RELAY).catch(() => {});
     triggerSuccessHaptic();
     if (enabled) {
+      const token = tokenRef.current;
+      if (token && previous && previous !== DEFAULT_RELAY) {
+        purgeSubscription(previous, token).catch(() => {});
+      }
       reRegister({ incoming, confirmations });
     }
   }, [enabled, incoming, confirmations, reRegister]);
