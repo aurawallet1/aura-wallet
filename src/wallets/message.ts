@@ -83,14 +83,20 @@ const messageDigest = (message: string): Uint8Array => {
 const decodePrivateKey = (wif: string): DecodedKey => {
   const decoded = base58Check.decode(wif.trim());
   if (decoded[0] !== WIF_PREFIX_MAINNET) {
+    decoded.fill(0);
     throw new Error('Unsupported private key prefix');
   }
   if (decoded.length === 34 && decoded[33] === WIF_SUFFIX_COMPRESSED) {
-    return { privateKey: decoded.slice(1, 33), compressed: true };
+    const privateKey = decoded.slice(1, 33);
+    decoded.fill(0);
+    return { privateKey, compressed: true };
   }
   if (decoded.length === 33) {
-    return { privateKey: decoded.slice(1, 33), compressed: false };
+    const privateKey = decoded.slice(1, 33);
+    decoded.fill(0);
+    return { privateKey, compressed: false };
   }
+  decoded.fill(0);
   throw new Error('Invalid private key length');
 };
 

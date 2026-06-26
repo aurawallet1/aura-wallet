@@ -1,4 +1,4 @@
-import React, { useCallback, useLayoutEffect, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import {
   Alert,
   I18nManager,
@@ -58,12 +58,17 @@ export const MultisigImportScreen = (): React.ReactElement => {
     });
   }, [navigation, dismiss, palette.fg, palette.elevated]);
 
+  const submittedRef = useRef(false);
   const submit = useCallback((): void => {
+    if (submittedRef.current) {
+      return;
+    }
     const phrase = normalizeSeedInput(draft);
     if (!isValidMnemonic(phrase)) {
       Alert.alert(loc.appGeneral.badSeedWords, loc.appGeneral.mnemonicCheckFailed);
       return;
     }
+    submittedRef.current = true;
     onImport(phrase);
     navigation.goBack();
   }, [draft, onImport, navigation]);

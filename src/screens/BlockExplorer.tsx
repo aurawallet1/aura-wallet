@@ -65,7 +65,11 @@ export const BlockExplorerScreen: React.FC = () => {
         return;
       }
       const candidate = normalizeExplorerUrl(typed.trim());
-      setBlockExplorer(isValidExplorerUrl(candidate) ? candidate : DEFAULT_EXPLORER_URL);
+      // Only persist a valid URL; an empty/invalid draft must not clobber the
+      // explorer the user already had saved.
+      if (isValidExplorerUrl(candidate)) {
+        setBlockExplorer(candidate);
+      }
     },
     [setBlockExplorer],
   );

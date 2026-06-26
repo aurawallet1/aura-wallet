@@ -88,13 +88,27 @@ export const NetworkFeeScreen: React.FC = () => {
   const draftRef = useRef({ customEnabled, customRate });
   draftRef.current = { customEnabled, customRate };
 
+  // Remember the last real preset so turning custom off restores it instead of
+  // snapping back to the default.
+  const lastPresetRef = useRef(
+    isPresetPreference(feePreference) ? feePreference : DEFAULT_PREFERENCE,
+  );
+  useEffect(() => {
+    if (isPresetPreference(feePreference)) {
+      lastPresetRef.current = feePreference;
+    }
+  }, [feePreference]);
+
   useEffect(
     () => () => {
       const { customEnabled: enabled, customRate: typed } = draftRef.current;
       if (!enabled) {
         return;
       }
-      setFeePreference(normalizeCustom(typed));
+      // Don't overwrite the saved preference with a default when nothing was typed.
+      if (parseRate(typed) > 0) {
+        setFeePreference(normalizeCustom(typed));
+      }
     },
     [setFeePreference],
   );
@@ -141,7 +155,7 @@ export const NetworkFeeScreen: React.FC = () => {
       if (value) {
         setTimeout(() => inputRef.current?.focus(), FOCUS_DELAY_MS);
       } else {
-        setFeePreference(DEFAULT_PREFERENCE);
+        setFeePreference(lastPresetRef.current);
       }
     },
     [setFeePreference],
