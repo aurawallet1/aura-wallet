@@ -25,7 +25,7 @@ import type {
   ScriptType,
   WalletAddress,
 } from '../types/index';
-import { fetchHistory } from '../network/mempool';
+import { fetchWalletHistory } from '../network/history';
 import { formatUnit, unitLabel } from '../utils/currency';
 import { triggerHaptic } from '../utils/haptics';
 import AddrRowItem, {
@@ -240,7 +240,7 @@ export const WalletAddressesScreen = (): React.ReactElement => {
       return;
     }
     let active = true;
-    fetchHistory(addresses)
+    fetchWalletHistory(addresses)
       .then(result => {
         if (!active) {
           return;

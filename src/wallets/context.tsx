@@ -202,7 +202,17 @@ const storageIsEncrypted = async (): Promise<boolean> => {
 const sealWallets = (wallets: WalletEntry[], password: string): string =>
   encryptBlob(JSON.stringify({ wallets }), password);
 
-const persistWallets = async (next: WalletEntry[]): Promise<void> => {
+let persistChain: Promise<void> = Promise.resolve();
+
+// Serialize every persist so concurrent read-modify-write of the bucket array
+// can't interleave and silently drop an update (e.g. a delete resurrecting).
+const persistWallets = (next: WalletEntry[]): Promise<void> => {
+  const run = persistChain.then(() => doPersistWallets(next));
+  persistChain = run.catch(() => {});
+  return run;
+};
+
+const doPersistWallets = async (next: WalletEntry[]): Promise<void> => {
   if (cachedPassword) {
     const buckets = await readBuckets();
     const cipher = sealWallets(next, cachedPassword);

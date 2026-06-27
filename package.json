@@ -1,6 +1,6 @@
 {
   "name": "aura-wallet",
-  "version": "26.26.60",
+  "version": "27.27.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
